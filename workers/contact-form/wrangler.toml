@@ -1,6 +1,7 @@
 name = "jessicarocha-contact-form"
 main = "src/index.ts"
 compatibility_date = "2024-11-01"
+compatibility_flags = ["nodejs_compat"]
 
 [vars]
 CONTACT_TO_EMAIL = "hello@jessicarocha.ca"

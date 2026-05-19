@@ -1,16 +1,50 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
 import NewsletterForm from '../components/NewsletterForm.astro';
 import { booksPageEntries, GOOGLE_PLAY_CURSED_BLOOD } from '../data/books';
+
+const bookSchemas = booksPageEntries.map((book) => ({
+  '@context': 'https://schema.org',
+  '@type': 'Book',
+  name: book.title,
+  author: {
+    '@type': 'Person',
+    name: 'Jessica Rocha',
+    url: 'https://jessicarocha.ca/',
+  },
+  inLanguage: 'en',
+  genre: book.genre,
+  datePublished: book.year,
+  bookFormat:
+    book.format && book.format.toLowerCase().includes('paperback')
+      ? 'https://schema.org/Paperback'
+      : 'https://schema.org/EBook',
+  ...(book.isbn ? { isbn: book.isbn } : {}),
+  image: new URL(book.cover, Astro.site).toString(),
+  description: book.description.join(' '),
+  url: new URL(Astro.url.pathname, Astro.site).toString(),
+  workExample: book.links.map((link) => ({
+    '@type': 'Book',
+    bookFormat: link.label.toLowerCase().includes('paperback')
+      ? 'https://schema.org/Paperback'
+      : 'https://schema.org/EBook',
+    url: link.href,
+  })),
+}));
 ---
 
 <BaseLayout
   title="Books — Jessica Rocha"
   description="All novels by Jessica Rocha — Hunt, Broken?, Death, Love, and Zombies, and Cursed Blood. Supernatural romance on Amazon, Google Play Books, and Inkitt."
 >
-  <Header />
+  {bookSchemas.map((schema) => (
+    <script
+      slot="head"
+      type="application/ld+json"
+      set:html={JSON.stringify(schema)}
+      is:inline
+    />
+  ))}
 
   <section class="page-hero">
     <div class="container">
@@ -107,7 +141,6 @@ import { booksPageEntries, GOOGLE_PLAY_CURSED_BLOOD } from '../data/books';
   </section>
 
   <NewsletterForm />
-  <Footer />
 </BaseLayout>
 
 <style>

@@ -1,5 +1,7 @@
 ---
 import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 
 export interface Props {
   title?: string;
@@ -16,16 +18,45 @@ const {
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const ogImageURL = new URL(image, Astro.site);
 
 const turnstileCspContent = [
   "default-src 'self'",
   "script-src 'self' https://challenges.cloudflare.com",
   "frame-src https://challenges.cloudflare.com",
-  "style-src 'self' 'unsafe-inline'",
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "img-src 'self' data: https:",
-  "font-src 'self' data:",
+  "font-src 'self' data: https://fonts.gstatic.com",
   "connect-src 'self' https:",
+  "form-action 'self' https://buttondown.com",
+  "frame-ancestors 'none'",
+  "base-uri 'self'",
 ].join('; ');
+
+const siteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Jessica Rocha',
+  url: 'https://jessicarocha.ca/',
+};
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Jessica Rocha',
+  jobTitle: 'Author',
+  url: 'https://jessicarocha.ca/',
+  nationality: 'Canadian',
+  description: 'Canadian author of supernatural romance.',
+  sameAs: [
+    'https://www.instagram.com/authorjessicarocha/',
+    'https://www.tiktok.com/@author.jessicarocha',
+    'https://www.facebook.com/AuthorJessicaRocha/',
+    'https://www.goodreads.com/author/show/21163939.Jessica_Rocha',
+    'https://www.amazon.ca/stores/Jessica-Rocha/author/B08Q3XDPJF',
+    'https://www.inkitt.com/Jessica_Rocha',
+  ],
+};
 ---
 
 <!doctype html>
@@ -35,6 +66,13 @@ const turnstileCspContent = [
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={canonicalURL} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://buttondown.com" />
+    {turnstileCsp && (
+      <link rel="preconnect" href="https://challenges.cloudflare.com" />
+    )}
 
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     {turnstileCsp && (
@@ -47,17 +85,27 @@ const turnstileCspContent = [
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalURL} />
-    <meta property="og:image" content={new URL(image, Astro.site)} />
+    <meta property="og:image" content={ogImageURL} />
     <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_CA" />
+    <meta property="og:site_name" content="Jessica Rocha" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={new URL(image, Astro.site)} />
+    <meta name="twitter:image" content={ogImageURL} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(siteSchema)} is:inline />
+    <script type="application/ld+json" set:html={JSON.stringify(personSchema)} is:inline />
 
     <slot name="head" />
   </head>
   <body>
-    <slot />
+    <a class="skip-link" href="#main">Skip to main content</a>
+    <Header />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <Footer />
   </body>
 </html>

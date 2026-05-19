@@ -79,7 +79,19 @@ export const books: Book[] = [
   },
 ];
 
-export const booksPageEntries = [
+export type BookPageEntry = {
+  title: string;
+  year: string;
+  genre: string;
+  description: string[];
+  cover: string;
+  links: BookLink[];
+  format: string;
+  isbn?: string;
+  tagline?: string;
+};
+
+export const booksPageEntries: BookPageEntry[] = [
   {
     title: 'Cursed Blood',
     year: '2026',

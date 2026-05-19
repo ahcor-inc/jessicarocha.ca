@@ -1,7 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
 import NewsletterForm from '../components/NewsletterForm.astro';
 import { GOOGLE_PLAY_CURSED_BLOOD } from '../data/books';
 
@@ -18,10 +16,8 @@ const MAX_MESSAGE = 10000;
   turnstileCsp={import.meta.env.PROD && Boolean(turnstileSiteKey)}
 >
   {turnstileSiteKey && (
-    <script slot="head" src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <script is:inline slot="head" src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   )}
-
-  <Header />
 
   <section class="page-hero">
     <div class="container">
@@ -178,8 +174,6 @@ const MAX_MESSAGE = 10000;
   </section>
 
   <NewsletterForm />
-
-  <Footer />
 </BaseLayout>
 
 <style>
@@ -353,14 +347,23 @@ const MAX_MESSAGE = 10000;
 </style>
 
 <script>
-const form = document.getElementById('contact-form');
+interface ContactPayload {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  company: string;
+  turnstile?: string;
+}
+
+const form = document.getElementById('contact-form') as HTMLFormElement | null;
 const errorEl = document.getElementById('contact-form-error');
 const submitBtn = document.getElementById('contact-submit');
 
 const contactEndpoint = form?.dataset.contactEndpoint ?? '';
 const turnstileSiteKey = form?.dataset.turnstileKey ?? '';
 
-function showError(message) {
+function showError(message: string) {
   if (!errorEl) return;
   errorEl.textContent = message;
   errorEl.hidden = false;
@@ -372,12 +375,12 @@ function clearError() {
   errorEl.hidden = true;
 }
 
-function getTurnstileToken(fd) {
+function getTurnstileToken(fd: FormData): string {
   const fromInput = fd.get('cf-turnstile-response');
   if (typeof fromInput === 'string' && fromInput) return fromInput;
   const ts = window.turnstile;
   if (ts && typeof ts.getResponse === 'function') {
-    return ts.getResponse() || '';
+    return ts.getResponse() ?? '';
   }
   return '';
 }
@@ -394,7 +397,7 @@ form?.addEventListener('submit', async (e) => {
   const fd = new FormData(form);
   const subjectKey = String(fd.get('subject') || '');
 
-  const payload = {
+  const payload: ContactPayload = {
     name: String(fd.get('name') || '').trim(),
     email: String(fd.get('email') || '').trim(),
     subject: subjectKey,

@@ -164,7 +164,7 @@ async function checkRateLimit(env: Env, ip: string): Promise<{ allowed: boolean;
   const windowSec =
     Number.parseInt(env.RATE_LIMIT_WINDOW_SEC ?? '', 10) || DEFAULT_RATE_LIMIT_WINDOW_SEC;
   const windowMs = windowSec * 1000;
-  const key = `ip:${ip}`;
+  const key = `contact:ip:${ip}`;
   const now = Date.now();
 
   const raw = await env.RATE_LIMIT.get(key);
@@ -288,10 +288,6 @@ export default {
       return jsonResponse({ error: GENERIC_FORBIDDEN_MSG }, 403, origin, allowed);
     }
 
-    if (!env.BREVO_API_KEY) {
-      return jsonResponse({ error: 'Service unavailable' }, 503, origin, allowed);
-    }
-
     const ip = getClientIp(request);
     const rate = await checkRateLimit(env, ip);
     if (!rate.allowed) {
@@ -327,6 +323,10 @@ export default {
         console.error('Turnstile verification failed');
         return jsonResponse({ error: GENERIC_FORBIDDEN_MSG }, 403, origin, allowed);
       }
+    }
+
+    if (!env.BREVO_API_KEY) {
+      return jsonResponse({ error: 'Service unavailable' }, 503, origin, allowed);
     }
 
     try {

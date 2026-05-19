@@ -1,7 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
 import NewsletterForm from '../components/NewsletterForm.astro';
 import { books, bookExcerpt, GOOGLE_PLAY_CURSED_BLOOD } from '../data/books';
 
@@ -12,8 +10,6 @@ const pullQuoteBook = books[0];
   title="About — Jessica Rocha"
   description="Jessica Rocha is a Canadian author of supernatural romance, known for Hunt, Death, Love, and Zombies, Cursed Blood, and Broken?."
 >
-  <Header />
-
   <section class="page-hero">
     <div class="container">
       <p class="section-label">The Author</p>
@@ -130,7 +126,6 @@ const pullQuoteBook = books[0];
   </section>
 
   <NewsletterForm />
-  <Footer />
 </BaseLayout>
 
 <style>

@@ -1,0 +1,9 @@
+dist/
+.astro/
+node_modules/
+workers/**/node_modules/
+public/
+*.min.js
+*.min.css
+yarn.lock
+package-lock.json

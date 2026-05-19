@@ -1,7 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
 import NewsletterForm from '../components/NewsletterForm.astro';
 import { books, bookExcerpt } from '../data/books';
 
@@ -12,8 +10,6 @@ const latestBook = books[0];
   title="Jessica Rocha — Author of Supernatural Romance"
   description="Official website of Jessica Rocha, Canadian author of supernatural romance novels Hunt, Cursed Blood, Death, Love, and Zombies, and Broken?."
 >
-  <Header />
-
   <section class="hero">
     <div class="hero-bg" aria-hidden="true"></div>
     <div class="container hero-inner">
@@ -151,8 +147,6 @@ const latestBook = books[0];
   </section>
 
   <NewsletterForm dark={true} />
-
-  <Footer />
 </BaseLayout>
 
 <style>

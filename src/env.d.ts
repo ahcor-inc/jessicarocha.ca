@@ -9,3 +9,13 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
+
+interface TurnstileAPI {
+  getResponse: (widgetId?: string) => string | undefined;
+  reset: (widgetId?: string) => void;
+  render?: (container: string | HTMLElement, options: Record<string, unknown>) => string;
+}
+
+interface Window {
+  turnstile?: TurnstileAPI;
+}
