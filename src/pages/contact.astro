@@ -40,7 +40,12 @@ const MAX_MESSAGE = 10000;
           all messages are welcome and read.
         </p>
 
-        <form class="contact-form" id="contact-form">
+        <form
+          class="contact-form"
+          id="contact-form"
+          data-contact-endpoint={contactEndpoint}
+          data-turnstile-key={turnstileSiteKey}
+        >
           <div class="form-row form-row--two">
             <label class="form-field">
               <span class="field-label">Name</span>
@@ -347,10 +352,13 @@ const MAX_MESSAGE = 10000;
 }
 </style>
 
-<script define:vars={{ contactEndpoint, turnstileSiteKey }}>
+<script>
 const form = document.getElementById('contact-form');
 const errorEl = document.getElementById('contact-form-error');
 const submitBtn = document.getElementById('contact-submit');
+
+const contactEndpoint = form?.dataset.contactEndpoint ?? '';
+const turnstileSiteKey = form?.dataset.turnstileKey ?? '';
 
 function showError(message) {
   if (!errorEl) return;
@@ -435,8 +443,7 @@ form?.addEventListener('submit', async (e) => {
     if (window.turnstile && typeof window.turnstile.reset === 'function') {
       window.turnstile.reset();
     }
-  } catch(error) {
-    console.log('error', error);
+  } catch {
     showError('Could not send your message. Check your connection and try again.');
   } finally {
     if (submitBtn instanceof HTMLButtonElement) {
