@@ -1,0 +1,179 @@
+/* ── Fonts ── */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Lato:wght@300;400;700&display=swap');
+
+/* ── Design tokens (dark-first, warm) ── */
+:root {
+  color-scheme: dark;
+
+  --bg:            #181512;
+  --surface:       #1E1B17;
+  --surface-raised:#26221C;
+  --surface-sunken:#12100D;
+  --text:          #E8E2D8;
+  --text-muted:    #9A9488;
+  --border:        #3A3630;
+
+  --cream:         var(--bg);
+  --cream-dark:    var(--surface-raised);
+  --charcoal:      var(--text);
+  --charcoal-mid:  var(--text-muted);
+  --mist:          var(--border);
+  --dark-bg:       var(--surface-sunken);
+  --dark-mid:      #1F1C17;
+
+  --wine:        #8F3A4C;
+  --wine-light:  #A84D62;
+  --gold:        #C49A5A;
+
+  --font-serif:  'Cormorant Garamond', Georgia, serif;
+  --font-sans:   'Lato', system-ui, sans-serif;
+
+  --max-w: 1160px;
+  --gap:   clamp(1.5rem, 5vw, 3.5rem);
+
+  --shadow-soft:  0 12px 40px rgba(0, 0, 0, 0.35);
+  --shadow-cover: 0 12px 32px rgba(0, 0, 0, 0.45);
+  --header-bg:    rgba(24, 21, 18, 0.92);
+}
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  font-size: 18px;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-weight: 300;
+  line-height: 1.7;
+}
+
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+
+/* ── Typography helpers ── */
+.serif { font-family: var(--font-serif); }
+
+h1, h2, h3, h4 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.section-label {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+/* ── Layout ── */
+.container {
+  width: min(var(--max-w), 100% - 3rem);
+  margin-inline: auto;
+}
+
+.section-gap { padding-block: clamp(4rem, 10vw, 8rem); }
+
+/* ── Buttons ── */
+.btn {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 0.85em 2.2em;
+  border: 1.5px solid currentColor;
+  cursor: pointer;
+  transition: background 0.25s, color 0.25s;
+}
+
+.btn-dark {
+  color: var(--text);
+  border-color: var(--text);
+}
+.btn-dark:hover {
+  background: var(--text);
+  color: var(--bg);
+}
+
+.btn-light {
+  color: var(--text);
+  border-color: var(--text);
+}
+.btn-light:hover {
+  background: var(--text);
+  color: var(--bg);
+}
+
+.btn-wine {
+  color: var(--wine-light);
+  border-color: var(--wine-light);
+}
+.btn-wine:hover {
+  background: var(--wine);
+  color: var(--text);
+}
+
+/* ── Divider ── */
+.rule {
+  width: 4rem;
+  height: 1px;
+  background: var(--gold);
+  display: block;
+  margin: 1.5rem auto;
+}
+.rule-left { margin-left: 0; }
+
+.author-portrait-wrap {
+  width: clamp(200px, 26vw, 360px);
+  flex-shrink: 0;
+}
+
+@media (max-width: 700px) {
+  .author-portrait-wrap {
+    width: clamp(200px, 70vw, 280px);
+  }
+}
+
+.author-photo {
+  width: 100%;
+  aspect-ratio: 3/4;
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+}
+
+.author-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  display: block;
+}
+
+.book-cover {
+  width: 100%;
+  aspect-ratio: 2/3;
+  object-fit: cover;
+  display: block;
+  box-shadow: var(--shadow-cover);
+}
+
+.book-cover--sm {
+  max-width: 170px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.book-tile:hover .book-cover--sm {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.5);
+}

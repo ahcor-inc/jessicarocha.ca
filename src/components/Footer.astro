@@ -1,0 +1,105 @@
+---
+import { GOOGLE_PLAY_CURSED_BLOOD } from '../data/books';
+
+const year = new Date().getFullYear();
+
+const social = [
+  { label: 'Instagram',       href: 'https://www.instagram.com/authorjessicarocha/' },
+  { label: 'TikTok',          href: 'https://www.tiktok.com/@author.jessicarocha' },
+  { label: 'Facebook',        href: 'https://www.facebook.com/AuthorJessicaRocha/' },
+  { label: 'Goodreads',       href: 'https://www.goodreads.com/author/show/21163939.Jessica_Rocha' },
+  { label: 'Amazon',          href: 'https://www.amazon.ca/stores/Jessica-Rocha/author/B08Q3XDPJF' },
+  { label: 'Inkitt',          href: 'https://www.inkitt.com/Jessica_Rocha' },
+  { label: 'Google Play',     href: GOOGLE_PLAY_CURSED_BLOOD },
+];
+---
+
+<footer class="site-footer">
+  <div class="footer-inner container">
+    <div class="footer-brand">
+      <span class="footer-name serif">Jessica Rocha</span>
+      <p class="footer-tagline">Canadian Author · Supernatural Romance</p>
+    </div>
+
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <a href="/books">Books</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+    </nav>
+
+    <div class="footer-social">
+      {social.map(s => (
+        <a href={s.href} target="_blank" rel="noopener noreferrer">{s.label}</a>
+      ))}
+    </div>
+
+    <p class="footer-copy">&copy; {year} Jessica Rocha. All rights reserved.</p>
+  </div>
+</footer>
+
+<style>
+.site-footer {
+  background: var(--dark-bg);
+  color: var(--mist);
+  padding-block: clamp(3rem, 8vw, 5rem);
+}
+
+.footer-inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+  text-align: center;
+}
+
+.footer-name {
+  display: block;
+  font-size: 2rem;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+.footer-tagline {
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  opacity: 0.85;
+}
+
+.footer-nav,
+.footer-social {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem 2rem;
+}
+
+.footer-nav a,
+.footer-social a {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  opacity: 0.75;
+  transition: opacity 0.2s, color 0.2s;
+}
+
+.footer-nav a:hover,
+.footer-social a:hover {
+  opacity: 1;
+  color: var(--gold);
+}
+
+.footer-social {
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding-top: 2rem;
+}
+
+.footer-copy {
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  opacity: 0.4;
+  text-transform: uppercase;
+}
+</style>

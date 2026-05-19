@@ -1,0 +1,216 @@
+---
+const links = [
+  { label: 'Books',   href: '/books' },
+  { label: 'About',   href: '/about' },
+  { label: 'Contact', href: '/contact' },
+];
+
+const current = Astro.url.pathname;
+---
+
+<header class="site-header">
+  <div class="header-inner container">
+    <a href="/" class="wordmark" aria-label="Jessica Rocha — home">
+      <span class="wordmark-text">
+        <span class="wordmark-first">Jessica</span>
+        <span class="wordmark-last-row">
+          <span class="wordmark-last">Rocha</span>
+          <img
+            class="wordmark-raven"
+            src="/images/raven.svg"
+            alt=""
+            width="152"
+            height="176"
+            decoding="async"
+          />
+        </span>
+      </span>
+    </a>
+
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="site-nav" role="navigation" aria-label="Main navigation">
+      <ul>
+        {links.map(l => (
+          <li>
+            <a href={l.href} class={current.startsWith(l.href) ? 'active' : ''}>{l.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+.site-header {
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline: 0;
+  z-index: 100;
+  padding-block: 1.25rem;
+  background: var(--header-bg);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+  transition: box-shadow 0.3s;
+}
+
+.site-header.scrolled {
+  box-shadow: 0 2px 24px rgba(0, 0, 0, 0.35);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.wordmark {
+  display: flex;
+  line-height: 1.1;
+}
+
+.wordmark-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.wordmark-first {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.wordmark-last-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.wordmark-last {
+  font-family: var(--font-serif);
+  font-size: 1.55rem;
+  font-weight: 600;
+  color: var(--charcoal);
+  letter-spacing: 0.02em;
+}
+
+.wordmark-raven {
+  width: 1.35rem;
+  height: auto;
+  flex-shrink: 0;
+  margin-bottom: 0.1rem;
+  opacity: 0.88;
+  filter: brightness(0) invert(0.92);
+}
+
+.site-nav ul {
+  display: flex;
+  gap: 2.5rem;
+  list-style: none;
+}
+
+.site-nav a {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--charcoal-mid);
+  position: relative;
+  padding-bottom: 2px;
+  transition: color 0.2s;
+}
+
+.site-nav a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--wine);
+  transition: width 0.25s;
+}
+
+.site-nav a:hover,
+.site-nav a.active {
+  color: var(--wine);
+}
+
+.site-nav a:hover::after,
+.site-nav a.active::after {
+  width: 100%;
+}
+
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 24px;
+  height: 1.5px;
+  background: var(--charcoal);
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+@media (max-width: 700px) {
+  .nav-toggle { display: flex; }
+
+  .site-nav {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline: 0;
+    height: 100dvh;
+    background: var(--surface-sunken);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateX(100%);
+    transition: transform 0.4s ease;
+    z-index: 99;
+  }
+
+  .site-nav.open {
+    transform: translateX(0);
+  }
+
+  .site-nav ul {
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .site-nav a {
+    font-size: 1rem;
+    color: var(--text);
+  }
+}
+</style>
+
+<script>
+const header = document.querySelector('.site-header');
+const toggle = document.querySelector('.nav-toggle');
+const nav    = document.querySelector('.site-nav');
+
+window.addEventListener('scroll', () => {
+  header?.classList.toggle('scrolled', window.scrollY > 20);
+}, { passive: true });
+
+toggle?.addEventListener('click', () => {
+  const open = nav?.classList.toggle('open');
+  toggle.setAttribute('aria-expanded', String(open));
+});
+</script>

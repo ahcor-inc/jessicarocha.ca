@@ -1,0 +1,401 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import NewsletterForm from '../components/NewsletterForm.astro';
+import { books, bookExcerpt } from '../data/books';
+
+const latestBook = books[0];
+---
+
+<BaseLayout
+  title="Jessica Rocha — Author of Supernatural Romance"
+  description="Official website of Jessica Rocha, Canadian author of supernatural romance novels Hunt, Cursed Blood, Death, Love, and Zombies, and Broken?."
+>
+  <Header />
+
+  <section class="hero">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="container hero-inner">
+      <div class="hero-text">
+        <p class="section-label">Canadian Author · Supernatural Romance</p>
+        <h1 class="hero-name serif">Jessica<br />Rocha</h1>
+        <div class="hero-cta">
+          <a href="/books" class="btn btn-dark">Explore the Books</a>
+          <a href="/about" class="btn btn-wine">About Jessica</a>
+        </div>
+      </div>
+      <div class="hero-portrait author-portrait-wrap" aria-label="Author portrait">
+        <div class="author-photo">
+          <img src="/images/jessica-rocha.jpg" alt="Jessica Rocha" width="400" height="533" />
+        </div>
+      </div>
+    </div>
+    <div class="hero-scroll-hint" aria-hidden="true">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <section class="section-gap spotlight">
+    <div class="container">
+      <p class="section-label" style="text-align:center">Latest Novel</p>
+      <h2 class="spotlight-heading serif">{latestBook.title}</h2>
+      <span class="rule"></span>
+
+      <div class="spotlight-layout">
+        <div class="spotlight-cover">
+          <img
+            class="book-cover"
+            src={latestBook.cover}
+            alt={`Cover of ${latestBook.title}`}
+            width="280"
+            height="420"
+            loading="eager"
+          />
+        </div>
+        <div class="spotlight-info">
+          <p class="section-label">{latestBook.genre} &nbsp;·&nbsp; {latestBook.year}</p>
+          {latestBook.tagline && (
+            <p class="spotlight-tagline serif">"{latestBook.tagline}"</p>
+          )}
+          <p class="spotlight-desc">{bookExcerpt(latestBook, 2)}</p>
+          <div class="spotlight-actions">
+            <a href="/books" class="btn btn-wine">Learn More</a>
+            {latestBook.amazonLink && (
+              <a href={latestBook.amazonLink} target="_blank" rel="noopener noreferrer" class="btn btn-dark">
+                Order on Amazon
+              </a>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band-dark">
+    <div class="container band-inner">
+      <p class="band-quote serif">
+        {bookExcerpt(latestBook, 1)}
+      </p>
+      <span class="rule"></span>
+      <p class="band-attr">— <em>{latestBook.title}</em></p>
+    </div>
+  </section>
+
+  <section class="section-gap">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-label">Bibliography</p>
+        <h2 class="serif section-title">All Books</h2>
+        <span class="rule"></span>
+      </div>
+      <div class="books-grid">
+        {books.map(book => (
+          <article class="book-tile">
+            <div class="tile-cover">
+              <img
+                class="book-cover book-cover--sm"
+                src={book.cover}
+                alt={`Cover of ${book.title}`}
+                width="170"
+                height="255"
+                loading="lazy"
+              />
+            </div>
+            <p class="section-label">{book.genre} · {book.year}</p>
+            <h3 class="tile-title serif">{book.title}</h3>
+            <p class="tile-desc">{bookExcerpt(book, 1)}</p>
+            <div class="tile-links">
+              <a href="/books" class="tile-link">More details →</a>
+              {(book.amazonLink || book.links?.[0]?.href) && (
+                <a
+                  href={book.amazonLink ?? book.links?.[0]?.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="tile-link tile-link-amazon"
+                >
+                  {book.amazonLink ? 'Amazon →' : 'Read →'}
+                </a>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+      <div style="text-align:center;margin-top:3rem">
+        <a href="/books" class="btn btn-dark">View All Books</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-teaser section-gap">
+    <div class="container about-layout">
+      <div class="about-img-wrap author-portrait-wrap">
+        <div class="author-photo">
+          <img src="/images/jessica-rocha.jpg" alt="Jessica Rocha" width="400" height="533" loading="lazy" />
+        </div>
+      </div>
+      <div class="about-text">
+        <p class="section-label">The Author</p>
+        <h2 class="serif about-title">About Jessica</h2>
+        <span class="rule rule-left"></span>
+        <p>
+          Jessica Rocha is a Canadian author of supernatural romance. She enjoys drinking tea and writing steamy romance novels. She is currently writing multiple novels and is dipping her toes into horror.
+        </p>
+        <p>
+          Her published works include <em>Hunt</em>, <em>Broken?</em>, <em>Death, Love, and Zombies</em>, and <em>Cursed Blood</em>.
+        </p>
+        <a href="/about" class="btn btn-wine about-cta">Full Bio</a>
+      </div>
+    </div>
+  </section>
+
+  <NewsletterForm dark={true} />
+
+  <Footer />
+</BaseLayout>
+
+<style>
+.hero {
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  position: relative;
+  overflow: hidden;
+  padding-block-start: 5rem;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 70% at 70% 50%, rgba(143, 58, 76, 0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 50% at 10% 80%, rgba(0, 0, 0, 0.35) 0%, transparent 60%),
+    linear-gradient(180deg, var(--bg) 0%, var(--surface) 100%);
+}
+
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: clamp(2.5rem, 7vw, 6rem);
+  align-items: center;
+  width: 100%;
+  max-width: min(var(--max-w), 100% - 3rem);
+  margin-inline: auto;
+  position: relative;
+  z-index: 1;
+  padding-block: 6rem 4rem;
+}
+
+.hero-name {
+  font-size: clamp(3.5rem, 10vw, 7.5rem);
+  font-weight: 300;
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  color: var(--charcoal);
+  margin-block: 0.6rem 1.5rem;
+}
+
+.hero-cta {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.hero-scroll-hint {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0.35;
+  z-index: 1;
+}
+
+.hero-scroll-hint span {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.scroll-line {
+  width: 1px;
+  height: 40px;
+  background: var(--charcoal);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.3; transform: scaleY(1); }
+  50% { opacity: 1; transform: scaleY(1.15); }
+}
+
+.spotlight { background: var(--surface); }
+
+.spotlight-heading {
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+.spotlight-layout {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: clamp(2.5rem, 7vw, 6rem);
+  align-items: start;
+  margin-top: 3.5rem;
+}
+
+.spotlight-cover {
+  width: clamp(180px, 24vw, 280px);
+  flex-shrink: 0;
+}
+
+.spotlight-tagline {
+  font-size: clamp(1.05rem, 2vw, 1.3rem);
+  font-style: italic;
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--wine-light);
+  margin-block: 1rem 1.25rem;
+}
+
+.spotlight-desc {
+  font-size: 0.98rem;
+  line-height: 1.85;
+  color: var(--charcoal-mid);
+  margin-bottom: 2rem;
+  max-width: 55ch;
+}
+
+.spotlight-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.band-dark {
+  background: var(--dark-bg);
+  padding-block: clamp(4rem, 10vw, 7rem);
+}
+
+.band-inner {
+  text-align: center;
+  max-width: 760px;
+}
+
+.band-quote {
+  font-size: clamp(1.5rem, 3.5vw, 2.4rem);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--text);
+  line-height: 1.45;
+  opacity: 0.9;
+}
+
+.band-attr {
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-top: 0.5rem;
+}
+
+.section-header { text-align: center; margin-bottom: 3.5rem; }
+.section-title {
+  font-size: clamp(2rem, 4.5vw, 3rem);
+  margin-top: 0.5rem;
+}
+
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: 3rem 2.5rem;
+}
+
+.book-tile { display: flex; flex-direction: column; }
+
+.tile-cover { margin-bottom: 1.5rem; }
+
+.tile-title {
+  font-size: 1.55rem;
+  margin-block: 0.4rem 0.8rem;
+}
+
+.tile-desc {
+  font-size: 0.9rem;
+  line-height: 1.8;
+  color: var(--charcoal-mid);
+  flex: 1;
+  margin-bottom: 1.25rem;
+}
+
+.tile-links {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.tile-link {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--wine-light);
+  transition: letter-spacing 0.2s;
+}
+
+.tile-link-amazon { color: var(--text-muted); }
+.tile-link:hover { letter-spacing: 0.18em; }
+
+.about-teaser { background: var(--surface-raised); }
+
+.about-layout {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: clamp(2.5rem, 7vw, 6rem);
+  align-items: center;
+  max-width: min(var(--max-w), 100% - 3rem);
+  margin-inline: auto;
+}
+
+.about-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin-top: 0.5rem;
+}
+
+.about-text p {
+  color: var(--charcoal-mid);
+  font-size: 1rem;
+  line-height: 1.85;
+}
+
+.about-cta { margin-top: 2rem; }
+
+@media (max-width: 700px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .hero-portrait {
+    margin-inline: auto;
+    order: -1;
+  }
+  .hero-cta { justify-content: center; }
+
+  .spotlight-layout { grid-template-columns: 1fr; }
+  .spotlight-cover { width: 160px; margin-inline: auto; }
+
+  .about-layout {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .about-img-wrap {
+    margin-inline: auto;
+  }
+  .rule-left { margin-inline: auto; }
+}
+</style>

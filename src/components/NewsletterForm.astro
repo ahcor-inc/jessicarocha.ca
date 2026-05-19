@@ -1,0 +1,132 @@
+---
+export interface Props {
+  dark?: boolean;
+}
+const { dark = false } = Astro.props;
+
+const buttondownUsername =
+  import.meta.env.PUBLIC_BUTTONDOWN_USERNAME ?? 'authorjessicarocha';
+const buttondownAction = `https://buttondown.com/api/emails/embed-subscribe/${buttondownUsername}`;
+---
+
+<section class:list={['newsletter', { 'newsletter--dark': dark }]}>
+  <div class="container newsletter-inner">
+    <p class="section-label">Stay connected</p>
+    <h2 class="nl-heading serif">Join the Reader's Circle</h2>
+    <span class="rule"></span>
+    <p class="nl-sub">
+      New releases, behind-the-scenes notes, and occasional reader news — straight to your inbox.
+    </p>
+    <form
+      class="nl-form embeddable-buttondown-form"
+      method="post"
+      action={buttondownAction}
+
+    >
+      <input type="hidden" name="embed" value="1" />
+      <div class="nl-row">
+        <input
+          type="email"
+          name="email"
+          placeholder="Your email address"
+          required
+          autocomplete="email"
+          aria-label="Email address"
+        />
+        <button type="submit" class:list={['btn', dark ? 'btn-light' : 'btn-dark']}>
+          Subscribe
+        </button>
+      </div>
+      <p class="nl-privacy">
+        No spam, ever. Unsubscribe at any time. If confirmation is enabled, check your inbox to confirm.
+      </p>
+    </form>
+    <p class="nl-alt">
+      <a href="https://www.facebook.com/AuthorJessicaRocha/" target="_blank" rel="noopener noreferrer">Facebook</a>
+      ·
+      <a href="https://www.instagram.com/authorjessicarocha/" target="_blank" rel="noopener noreferrer">Instagram</a>
+    </p>
+  </div>
+</section>
+
+<style>
+.newsletter {
+  background: var(--surface-raised);
+  padding-block: clamp(4rem, 10vw, 7rem);
+}
+
+.newsletter--dark {
+  background: var(--surface-sunken);
+}
+
+.newsletter-inner {
+  text-align: center;
+  max-width: 580px;
+}
+
+.nl-heading {
+  font-size: clamp(2rem, 5vw, 3rem);
+  margin-top: 0.5rem;
+}
+
+.nl-sub {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+}
+
+.nl-form { width: 100%; }
+
+.nl-row {
+  display: flex;
+  gap: 0;
+  border: 1.5px solid var(--border);
+  overflow: hidden;
+}
+
+.nl-row input {
+  flex: 1;
+  padding: 0.85em 1.25em;
+  border: none;
+  background: transparent;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: var(--text);
+  outline: none;
+}
+
+.nl-row input::placeholder {
+  color: var(--text-muted);
+  opacity: 0.7;
+}
+
+.nl-row .btn {
+  border: none;
+  border-left: 1.5px solid var(--border);
+  flex-shrink: 0;
+}
+
+.nl-privacy {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-top: 0.9rem;
+  letter-spacing: 0.05em;
+}
+
+.nl-alt {
+  font-size: 0.82rem;
+  margin-top: 1.25rem;
+  color: var(--text-muted);
+}
+
+.nl-alt a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.nl-alt a:hover {
+  color: var(--gold);
+}
+</style>

@@ -1,0 +1,246 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import NewsletterForm from '../components/NewsletterForm.astro';
+import { books, bookExcerpt, GOOGLE_PLAY_CURSED_BLOOD } from '../data/books';
+
+const pullQuoteBook = books[0];
+---
+
+<BaseLayout
+  title="About — Jessica Rocha"
+  description="Jessica Rocha is a Canadian author of supernatural romance, known for Hunt, Death, Love, and Zombies, Cursed Blood, and Broken?."
+>
+  <Header />
+
+  <section class="page-hero">
+    <div class="container">
+      <p class="section-label">The Author</p>
+      <h1 class="serif page-title">About Jessica</h1>
+      <span class="rule"></span>
+    </div>
+  </section>
+
+  <section class="section-gap">
+    <div class="container bio-layout">
+      <div class="bio-img author-portrait-wrap">
+        <div class="author-photo">
+          <img src="/images/jessica-rocha.jpg" alt="Jessica Rocha" width="400" height="533" loading="eager" />
+        </div>
+      </div>
+      <div class="bio-text">
+        <h2 class="serif bio-heading">Jessica Rocha</h2>
+        <p class="bio-sub section-label">Canadian Author · Supernatural Romance</p>
+        <span class="rule rule-left"></span>
+
+        <p>
+          Jessica Rocha is a Canadian author of supernatural romance. She enjoys drinking tea and writing steamy romance novels. She is currently writing multiple novels and is dipping her toes into horror.
+        </p>
+        <p>
+          Her published works include <em>Hunt</em> (2020), <em>Broken?</em> (2021), <em>Death, Love, and Zombies</em> (2021), and <em>Cursed Blood</em> (2026).
+          Her books are available on Amazon, Google Play Books, Inkitt, and more.
+        </p>
+
+        <div class="bio-meta">
+          <div class="bio-stat">
+            <span class="stat-number serif">4</span>
+            <span class="stat-label">Novels</span>
+          </div>
+          <div class="bio-stat">
+            <span class="stat-number serif">🇨🇦</span>
+            <span class="stat-label">Canadian</span>
+          </div>
+          <div class="bio-stat">
+            <span class="stat-number serif">∞</span>
+            <span class="stat-label">More to Come</span>
+          </div>
+        </div>
+
+        <div class="bio-links">
+          <a
+            href="https://www.amazon.ca/stores/Jessica-Rocha/author/B08Q3XDPJF"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-dark"
+          >
+            Amazon
+          </a>
+          <a
+            href="https://www.goodreads.com/author/show/21163939.Jessica_Rocha"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-wine"
+          >
+            Goodreads
+          </a>
+          <a
+            href="https://www.facebook.com/AuthorJessicaRocha/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-wine"
+          >
+            Facebook
+          </a>
+          <a
+            href="https://www.instagram.com/authorjessicarocha/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-wine"
+          >
+            Instagram
+          </a>
+          <a
+            href="https://www.tiktok.com/@author.jessicarocha"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-wine"
+          >
+            TikTok
+          </a>
+          <a
+            href="https://www.inkitt.com/Jessica_Rocha"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-wine"
+          >
+            Inkitt
+          </a>
+          <a
+            href={GOOGLE_PLAY_CURSED_BLOOD}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-wine"
+          >
+            Google Play Books
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="dark-band">
+    <div class="container dark-band-inner">
+      <p class="band-quote serif">
+        {bookExcerpt(pullQuoteBook, 1)}
+      </p>
+      <span class="rule"></span>
+      <p class="band-attr">— <em>{pullQuoteBook.title}</em></p>
+    </div>
+  </section>
+
+  <NewsletterForm />
+  <Footer />
+</BaseLayout>
+
+<style>
+.page-hero {
+  background: var(--surface-raised);
+  padding-block: clamp(6rem, 14vw, 10rem) 3rem;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+
+.page-title {
+  font-size: clamp(2.8rem, 8vw, 5.5rem);
+  font-weight: 300;
+  margin-top: 0.5rem;
+}
+
+.bio-layout {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: clamp(2.5rem, 7vw, 6rem);
+  align-items: start;
+  max-width: min(var(--max-w), 100% - 3rem);
+  margin-inline: auto;
+}
+
+.bio-heading {
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin-bottom: 0.2rem;
+}
+
+.bio-sub { margin-bottom: 0.5rem; }
+
+.bio-text p {
+  color: var(--charcoal-mid);
+  line-height: 1.88;
+  margin-bottom: 1.2rem;
+}
+
+.bio-meta {
+  display: flex;
+  gap: 2.5rem;
+  padding: 1.75rem 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  margin-block: 1.75rem;
+}
+
+.bio-stat { text-align: center; }
+
+.stat-number {
+  display: block;
+  font-size: 2.8rem;
+  font-weight: 300;
+  color: var(--wine-light);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--charcoal-mid);
+  opacity: 0.65;
+  margin-top: 0.4rem;
+  display: block;
+}
+
+.bio-links {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1.75rem;
+}
+
+.dark-band {
+  background: var(--dark-bg);
+  padding-block: clamp(4rem, 10vw, 7rem);
+}
+
+.dark-band-inner {
+  text-align: center;
+  max-width: 800px;
+  margin-inline: auto;
+}
+
+.band-quote {
+  font-size: clamp(1.3rem, 3vw, 2.1rem);
+  font-style: italic;
+  font-weight: 300;
+  color: var(--text);
+  opacity: 0.9;
+  line-height: 1.55;
+  margin-bottom: 1rem;
+}
+
+.band-attr {
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+@media (max-width: 700px) {
+  .bio-layout { grid-template-columns: 1fr; text-align: center; }
+  .bio-img {
+    margin-inline: auto;
+  }
+  .rule-left { margin-inline: auto; }
+  .bio-meta { justify-content: center; }
+  .bio-links { justify-content: center; }
+}
+</style>

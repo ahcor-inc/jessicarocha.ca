@@ -1,0 +1,262 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import NewsletterForm from '../components/NewsletterForm.astro';
+import { booksPageEntries, GOOGLE_PLAY_CURSED_BLOOD } from '../data/books';
+---
+
+<BaseLayout
+  title="Books — Jessica Rocha"
+  description="All novels by Jessica Rocha — Hunt, Broken?, Death, Love, and Zombies, and Cursed Blood. Supernatural romance on Amazon, Google Play Books, and Inkitt."
+>
+  <Header />
+
+  <section class="page-hero">
+    <div class="container">
+      <p class="section-label">Bibliography</p>
+      <h1 class="serif page-title">The Books</h1>
+      <span class="rule"></span>
+    </div>
+  </section>
+
+  <section class="section-gap">
+    <div class="container books-list">
+      {booksPageEntries.map((book, i) => (
+        <article class:list={['book-entry', { 'book-entry--alt': i % 2 !== 0 }]}>
+          <div class="entry-cover">
+            <img
+              class="book-cover entry-cover-img"
+              src={book.cover}
+              alt={`Cover of ${book.title}`}
+              width="260"
+              height="390"
+              loading="lazy"
+            />
+          </div>
+
+          <div class="entry-info">
+            <p class="section-label">{book.genre} &nbsp;·&nbsp; {book.year}</p>
+            <h2 class="entry-title serif">{book.title}</h2>
+            <span class="rule rule-left"></span>
+            {book.tagline && (
+              <p class="entry-tagline serif">"{book.tagline}"</p>
+            )}
+            {book.description.map(para => (
+              <p class="entry-para">{para}</p>
+            ))}
+
+            <div class="entry-meta">
+              <span class="meta-item"><strong>Format:</strong> {book.format}</span>
+              {book.isbn && <span class="meta-item"><strong>ISBN:</strong> {book.isbn}</span>}
+            </div>
+
+            <div class="entry-actions">
+              {book.links.map((link, idx) => (
+                <a
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class:list={['btn', idx === 0 ? 'btn-dark' : 'btn-wine']}
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="reading-band">
+    <div class="container reading-band-inner">
+      <p class="section-label">New to Jessica's Work?</p>
+      <h2 class="serif reading-band-title">Where to Start</h2>
+      <span class="rule"></span>
+      <p class="reading-band-text">
+        Each novel stands alone. Full descriptions are on the retailer pages below.
+      </p>
+      <div class="reading-band-actions">
+        <a
+          href="https://www.amazon.ca/stores/Jessica-Rocha/author/B08Q3XDPJF"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-light"
+        >
+          Amazon Author Page
+        </a>
+        <a
+          href="https://www.inkitt.com/Jessica_Rocha"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-light"
+        >
+          Read on Inkitt
+        </a>
+        <a
+          href={GOOGLE_PLAY_CURSED_BLOOD}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-light"
+        >
+          Google Play Books
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <NewsletterForm />
+  <Footer />
+</BaseLayout>
+
+<style>
+.page-hero {
+  background: var(--dark-bg);
+  padding-block: clamp(7rem, 15vw, 11rem) 3.5rem;
+  text-align: center;
+}
+
+.page-hero .section-label { color: var(--gold); }
+
+.page-title {
+  font-size: clamp(3rem, 9vw, 6rem);
+  font-weight: 300;
+  color: var(--text);
+  margin-top: 0.5rem;
+}
+
+.page-hero .rule { background: var(--gold); }
+
+.page-sub {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(1.05rem, 2vw, 1.3rem);
+  color: var(--mist);
+  opacity: 0.75;
+  max-width: 50ch;
+  margin-inline: auto;
+  margin-top: 1rem;
+}
+
+.books-list {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(4rem, 10vw, 8rem);
+}
+
+.book-entry {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: clamp(2.5rem, 7vw, 6rem);
+  align-items: start;
+}
+
+.book-entry--alt {
+  direction: rtl;
+}
+
+.book-entry--alt > * {
+  direction: ltr;
+}
+
+.entry-cover { flex-shrink: 0; }
+
+.entry-cover-img {
+  width: clamp(180px, 22vw, 260px);
+}
+
+.entry-title {
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  margin-top: 0.4rem;
+}
+
+.entry-tagline {
+  font-size: clamp(1rem, 1.8vw, 1.25rem);
+  font-style: italic;
+  font-weight: 300;
+  color: var(--wine-light);
+  line-height: 1.55;
+  margin-block: 1rem 1.5rem;
+}
+
+.entry-para {
+  font-size: 0.98rem;
+  line-height: 1.88;
+  color: var(--charcoal-mid);
+  margin-bottom: 1rem;
+  max-width: 60ch;
+}
+
+.entry-meta {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  padding-block: 1.25rem;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  margin-block: 1.5rem;
+  font-size: 0.82rem;
+  color: var(--charcoal-mid);
+}
+
+.meta-item strong { color: var(--text); }
+
+.entry-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.reading-band {
+  background: var(--dark-mid);
+  padding-block: clamp(4rem, 10vw, 7rem);
+}
+
+.reading-band-inner {
+  text-align: center;
+  max-width: 700px;
+}
+
+.reading-band .rule { background: var(--gold); }
+
+.reading-band-title {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  margin-top: 0.5rem;
+  color: var(--text);
+}
+
+.reading-band-text {
+  color: var(--mist);
+  font-size: 1rem;
+  line-height: 1.8;
+  opacity: 0.8;
+  margin-bottom: 2rem;
+}
+
+.reading-band-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+@media (max-width: 700px) {
+  .book-entry,
+  .book-entry--alt {
+    grid-template-columns: 1fr;
+    direction: ltr;
+    text-align: center;
+  }
+
+  .entry-cover-img {
+    width: 160px;
+    margin-inline: auto;
+  }
+
+  .rule-left { margin-inline: auto; }
+  .entry-para { max-width: 100%; }
+  .entry-meta { justify-content: center; }
+  .entry-actions { justify-content: center; }
+}
+</style>
