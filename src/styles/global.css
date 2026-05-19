@@ -167,6 +167,12 @@ h1, h2, h3, h4 {
   box-shadow: var(--shadow-cover);
 }
 
+.book-cover--spotlight {
+  aspect-ratio: auto;
+  height: auto;
+  object-fit: contain;
+}
+
 .book-cover--sm {
   max-width: 170px;
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);

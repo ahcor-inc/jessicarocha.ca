@@ -46,7 +46,7 @@ const latestBook = books[0];
       <div class="spotlight-layout">
         <div class="spotlight-cover">
           <img
-            class="book-cover"
+            class="book-cover book-cover--spotlight"
             src={latestBook.cover}
             alt={`Cover of ${latestBook.title}`}
             width="280"
@@ -204,7 +204,7 @@ const latestBook = books[0];
 
 .hero-scroll-hint {
   position: absolute;
-  bottom: 2.5rem;
+  bottom: max(2.5rem, env(safe-area-inset-bottom, 0px));
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -212,7 +212,8 @@ const latestBook = books[0];
   align-items: center;
   gap: 0.5rem;
   opacity: 0.35;
-  z-index: 1;
+  z-index: 2;
+  pointer-events: none;
 }
 
 .hero-scroll-hint span {
@@ -252,6 +253,7 @@ const latestBook = books[0];
 .spotlight-cover {
   width: clamp(180px, 24vw, 280px);
   flex-shrink: 0;
+  background: var(--surface);
 }
 
 .spotlight-tagline {
@@ -379,6 +381,10 @@ const latestBook = books[0];
   .hero-inner {
     grid-template-columns: 1fr;
     text-align: center;
+    padding-block: 2.5rem 3rem;
+  }
+  .hero-scroll-hint {
+    display: none;
   }
   .hero-portrait {
     margin-inline: auto;
