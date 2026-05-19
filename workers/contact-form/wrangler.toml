@@ -1,0 +1,16 @@
+name = "jessicarocha-contact-form"
+main = "src/index.ts"
+compatibility_date = "2024-11-01"
+
+[vars]
+CONTACT_TO_EMAIL = "hello@jessicarocha.ca"
+CONTACT_FROM_EMAIL = "hello@jessicarocha.ca"
+CONTACT_FROM_NAME = "Jessica Rocha Website"
+ALLOWED_ORIGINS = "https://jessicarocha.ca,http://localhost:4321,http://127.0.0.1:4321"
+RATE_LIMIT_MAX = "5"
+RATE_LIMIT_WINDOW_SEC = "900"
+
+[[kv_namespaces]]
+binding = "RATE_LIMIT"
+id = "550b6161600a4a4190f2de0be5ee70db"
+preview_id = "8ea429b4efed49979ab40138672786fe"

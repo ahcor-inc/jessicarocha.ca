@@ -4,6 +4,8 @@ dist/
 
 # Dependencies
 node_modules/
+workers/**/node_modules/
+package-lock.json
 
 # Logs
 npm-debug.log*

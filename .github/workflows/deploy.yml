@@ -19,11 +19,14 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PUBLIC_BUTTONDOWN_USERNAME: ${{ vars.PUBLIC_BUTTONDOWN_USERNAME }}
+      PUBLIC_CONTACT_FORM_ENDPOINT: ${{ vars.PUBLIC_CONTACT_FORM_ENDPOINT }}
+      PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.PUBLIC_TURNSTILE_SITE_KEY }}
     steps:
       - uses: actions/checkout@v4
       - uses: withastro/action@v3
         with:
           node-version: 22
+          package-manager: yarn
 
   deploy:
     needs: build

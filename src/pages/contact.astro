@@ -2,13 +2,25 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import NewsletterForm from '../components/NewsletterForm.astro';
 import { GOOGLE_PLAY_CURSED_BLOOD } from '../data/books';
+
+const contactEndpoint = import.meta.env.PUBLIC_CONTACT_FORM_ENDPOINT ?? '';
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
+
+const MAX_NAME = 200;
+const MAX_MESSAGE = 10000;
 ---
 
 <BaseLayout
   title="Contact — Jessica Rocha"
   description="Get in touch with author Jessica Rocha — for reader mail, media inquiries, or general questions."
+  turnstileCsp={import.meta.env.PROD && Boolean(turnstileSiteKey)}
 >
+  {turnstileSiteKey && (
+    <script slot="head" src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  )}
+
   <Header />
 
   <section class="page-hero">
@@ -21,7 +33,6 @@ import { GOOGLE_PLAY_CURSED_BLOOD } from '../data/books';
 
   <section class="section-gap">
     <div class="container contact-layout">
-      <!-- ── FORM ── -->
       <div class="contact-form-wrap">
         <h2 class="serif contact-heading">Send a Message</h2>
         <p class="contact-intro">
@@ -33,11 +44,25 @@ import { GOOGLE_PLAY_CURSED_BLOOD } from '../data/books';
           <div class="form-row form-row--two">
             <label class="form-field">
               <span class="field-label">Name</span>
-              <input type="text" name="name" required placeholder="Your name" autocomplete="name" />
+              <input
+                type="text"
+                name="name"
+                required
+                maxlength={MAX_NAME}
+                placeholder="Your name"
+                autocomplete="name"
+              />
             </label>
             <label class="form-field">
               <span class="field-label">Email</span>
-              <input type="email" name="email" required placeholder="your@email.com" autocomplete="email" />
+              <input
+                type="email"
+                name="email"
+                required
+                maxlength={254}
+                placeholder="your@email.com"
+                autocomplete="email"
+              />
             </label>
           </div>
 
@@ -54,14 +79,31 @@ import { GOOGLE_PLAY_CURSED_BLOOD } from '../data/books';
 
           <label class="form-field">
             <span class="field-label">Message</span>
-            <textarea name="message" required rows="6" placeholder="Your message…"></textarea>
+            <textarea
+              name="message"
+              required
+              maxlength={MAX_MESSAGE}
+              rows="6"
+              placeholder="Your message…"
+            ></textarea>
           </label>
 
-          <button type="submit" class="btn btn-dark">Send Message</button>
+          <label class="hp-field" aria-hidden="true">
+            <span>Company</span>
+            <input type="text" name="company" tabindex="-1" autocomplete="off" />
+          </label>
+
+          {turnstileSiteKey && (
+            <div class="turnstile-wrap">
+              <div class="cf-turnstile" data-sitekey={turnstileSiteKey}></div>
+            </div>
+          )}
+
+          <p class="form-error" id="contact-form-error" hidden role="alert"></p>
+          <button type="submit" class="btn btn-dark" id="contact-submit">Send Message</button>
         </form>
       </div>
 
-      <!-- ── SIDEBAR ── -->
       <aside class="contact-sidebar">
         <div class="sidebar-block">
           <p class="section-label">Find Jessica Online</p>
@@ -130,6 +172,8 @@ import { GOOGLE_PLAY_CURSED_BLOOD } from '../data/books';
     </div>
   </section>
 
+  <NewsletterForm />
+
   <Footer />
 </BaseLayout>
 
@@ -166,7 +210,6 @@ import { GOOGLE_PLAY_CURSED_BLOOD } from '../data/books';
   margin-bottom: 2.5rem;
 }
 
-/* ── Form ── */
 .contact-form {
   display: flex;
   flex-direction: column;
@@ -217,7 +260,29 @@ import { GOOGLE_PLAY_CURSED_BLOOD } from '../data/books';
 
 .contact-form .btn { align-self: flex-start; margin-top: 0.5rem; }
 
-/* ── Sidebar ── */
+.hp-field {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.turnstile-wrap {
+  min-height: 65px;
+}
+
+.form-error {
+  font-size: 0.9rem;
+  color: var(--wine);
+  margin: 0;
+}
+
+.contact-form .btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .contact-sidebar {
   display: flex;
   flex-direction: column;
@@ -282,16 +347,102 @@ import { GOOGLE_PLAY_CURSED_BLOOD } from '../data/books';
 }
 </style>
 
-<script>
+<script define:vars={{ contactEndpoint, turnstileSiteKey }}>
 const form = document.getElementById('contact-form');
-form?.addEventListener('submit', (e) => {
+const errorEl = document.getElementById('contact-form-error');
+const submitBtn = document.getElementById('contact-submit');
+
+function showError(message) {
+  if (!errorEl) return;
+  errorEl.textContent = message;
+  errorEl.hidden = false;
+}
+
+function clearError() {
+  if (!errorEl) return;
+  errorEl.textContent = '';
+  errorEl.hidden = true;
+}
+
+function getTurnstileToken(fd) {
+  const fromInput = fd.get('cf-turnstile-response');
+  if (typeof fromInput === 'string' && fromInput) return fromInput;
+  const ts = window.turnstile;
+  if (ts && typeof ts.getResponse === 'function') {
+    return ts.getResponse() || '';
+  }
+  return '';
+}
+
+form?.addEventListener('submit', async (e) => {
   e.preventDefault();
+  clearError();
+
+  if (!contactEndpoint) {
+    showError('Contact form is not configured. Please try again later.');
+    return;
+  }
+
   const fd = new FormData(form);
-  const subject = fd.get('subject') || 'Contact';
-  const body = `Name: ${fd.get('name')}\nEmail: ${fd.get('email')}\n\n${fd.get('message')}`;
-  window.location.href = `mailto:hello@jessicarocha.ca?subject=${encodeURIComponent(String(subject))}&body=${encodeURIComponent(body)}`;
-  setTimeout(() => {
-    window.location.href = '/thank-you';
-  }, 300);
+  const subjectKey = String(fd.get('subject') || '');
+
+  const payload = {
+    name: String(fd.get('name') || '').trim(),
+    email: String(fd.get('email') || '').trim(),
+    subject: subjectKey,
+    message: String(fd.get('message') || '').trim(),
+    company: String(fd.get('company') || '').trim(),
+  };
+
+  if (turnstileSiteKey) {
+    payload.turnstile = getTurnstileToken(fd);
+    if (!payload.turnstile) {
+      showError('Please complete the verification check.');
+      return;
+    }
+  }
+
+  if (submitBtn instanceof HTMLButtonElement) {
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+  }
+
+  try {
+    const res = await fetch(contactEndpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    if (res.status === 204 || res.ok) {
+      window.location.href = '/thank-you';
+      return;
+    }
+
+    let message = 'Something went wrong. Please try again.';
+    if (res.status === 429) {
+      message = 'Too many messages sent. Please wait a few minutes and try again.';
+    } else {
+      try {
+        const data = await res.json();
+        if (data?.error) message = data.error;
+      } catch {
+        /* ignore */
+      }
+    }
+    showError(message);
+
+    if (window.turnstile && typeof window.turnstile.reset === 'function') {
+      window.turnstile.reset();
+    }
+  } catch(error) {
+    console.log('error', error);
+    showError('Could not send your message. Check your connection and try again.');
+  } finally {
+    if (submitBtn instanceof HTMLButtonElement) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send Message';
+    }
+  }
 });
 </script>
