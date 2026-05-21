@@ -204,7 +204,31 @@ h1, h2, h3, h4 {
   transition: transform 0.3s, box-shadow 0.3s;
 }
 
+.book-cover--draft {
+  filter: grayscale(100%);
+  opacity: 0.8;
+}
+
 .book-tile:hover .book-cover--sm {
   transform: translateY(-5px);
   box-shadow: 0 10px 32px rgba(0, 0, 0, 0.5);
+}
+
+.book-badge {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid var(--gold);
+  padding: 0.35em 0.75em;
+  margin-bottom: 0.5rem;
+}
+
+.entry-coming-soon-note {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-style: italic;
 }

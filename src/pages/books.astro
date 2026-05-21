@@ -1,9 +1,16 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import NewsletterForm from '../components/NewsletterForm.astro';
-import { booksPageEntries, GOOGLE_PLAY_CURSED_BLOOD } from '../data/books';
+import {
+  GOOGLE_PLAY_CURSED_BLOOD,
+  bookMetaLabel,
+  isComingSoon,
+  releasedBooksPageEntries,
+  upcomingBooksPageEntries,
+  type BookPageEntry,
+} from '../data/books';
 
-const bookSchemas = booksPageEntries.map((book) => ({
+const bookSchemas = releasedBooksPageEntries.map((book) => ({
   '@context': 'https://schema.org',
   '@type': 'Book',
   name: book.title,
@@ -14,7 +21,7 @@ const bookSchemas = booksPageEntries.map((book) => ({
   },
   inLanguage: 'en',
   genre: book.genre,
-  datePublished: book.year,
+  ...(book.year ? { datePublished: book.year } : {}),
   bookFormat:
     book.format && book.format.toLowerCase().includes('paperback')
       ? 'https://schema.org/Paperback'
@@ -23,7 +30,7 @@ const bookSchemas = booksPageEntries.map((book) => ({
   image: new URL(book.cover, Astro.site).toString(),
   description: book.description.join(' '),
   url: new URL(Astro.url.pathname, Astro.site).toString(),
-  workExample: book.links.map((link) => ({
+  workExample: (book.links ?? []).map((link) => ({
     '@type': 'Book',
     bookFormat: link.label.toLowerCase().includes('paperback')
       ? 'https://schema.org/Paperback'
@@ -31,6 +38,10 @@ const bookSchemas = booksPageEntries.map((book) => ({
     url: link.href,
   })),
 }));
+
+function showEntryMeta(book: BookPageEntry): boolean {
+  return !isComingSoon(book) || Boolean(book.format || book.isbn);
+}
 ---
 
 <BaseLayout
@@ -56,8 +67,8 @@ const bookSchemas = booksPageEntries.map((book) => ({
 
   <section class="section-gap">
     <div class="container books-list">
-      {booksPageEntries.map((book, i) => (
-        <article class:list={['book-entry', { 'book-entry--alt': i % 2 !== 0 }]}>
+      {releasedBooksPageEntries.map((book, i) => (
+        <article id={book.slug} class:list={['book-entry', { 'book-entry--alt': i % 2 !== 0 }]}>
           <div class="entry-cover">
             <img
               class="book-cover entry-cover-img"
@@ -70,13 +81,13 @@ const bookSchemas = booksPageEntries.map((book) => ({
           </div>
 
           <div class="entry-info">
-            <p class="section-label">{book.genre} &nbsp;·&nbsp; {book.year}</p>
+            <p class="section-label">{bookMetaLabel(book)}</p>
             <h2 class="entry-title serif">{book.title}</h2>
             <span class="rule rule-left"></span>
             {book.tagline && (
               <p class="entry-tagline serif">"{book.tagline}"</p>
             )}
-            {book.description.map(para => (
+            {book.description.map((para) => (
               <p class="entry-para">{para}</p>
             ))}
 
@@ -86,7 +97,7 @@ const bookSchemas = booksPageEntries.map((book) => ({
             </div>
 
             <div class="entry-actions">
-              {book.links.map((link, idx) => (
+              {(book.links ?? []).map((link, idx) => (
                 <a
                   href={link.href}
                   target="_blank"
@@ -102,6 +113,74 @@ const bookSchemas = booksPageEntries.map((book) => ({
       ))}
     </div>
   </section>
+
+  {upcomingBooksPageEntries.length > 0 && (
+    <section class="section-gap upcoming-books-section">
+      <div class="container">
+        <div class="section-header upcoming-books-header">
+          <h2 class="serif section-title">Upcoming Books</h2>
+          <span class="rule"></span>
+        </div>
+        <div class="books-list">
+          {upcomingBooksPageEntries.map((book, i) => (
+            <article id={book.slug} class:list={['book-entry', { 'book-entry--alt': i % 2 !== 0 }]}>
+              <div class="entry-cover">
+                <img
+                  class:list={['book-cover', 'entry-cover-img', { 'book-cover--draft': book.coverDraft }]}
+                  src={book.cover}
+                  alt={`Cover of ${book.title}`}
+                  width="260"
+                  height="390"
+                  loading="lazy"
+                />
+              </div>
+
+              <div class="entry-info">
+                <span class="book-badge">Coming Soon</span>
+                <p class="section-label">{bookMetaLabel(book)}</p>
+                <h2 class="entry-title serif">{book.title}</h2>
+                <span class="rule rule-left"></span>
+                {book.tagline && (
+                  <p class="entry-tagline serif">"{book.tagline}"</p>
+                )}
+                {book.description.map((para) => (
+                  <p class="entry-para">{para}</p>
+                ))}
+
+                {showEntryMeta(book) && (
+                  <div class="entry-meta">
+                    {book.format && (
+                      <span class="meta-item"><strong>Format:</strong> {book.format}</span>
+                    )}
+                    {book.isbn && (
+                      <span class="meta-item"><strong>ISBN:</strong> {book.isbn}</span>
+                    )}
+                  </div>
+                )}
+
+                <div class="entry-actions">
+                  {(book.links ?? []).length > 0 ? (
+                    (book.links ?? []).map((link, idx) => (
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class:list={['btn', idx === 0 ? 'btn-dark' : 'btn-wine']}
+                      >
+                        {link.label}
+                      </a>
+                    ))
+                  ) : (
+                    <p class="entry-coming-soon-note">Retailer links coming soon.</p>
+                  )}
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
 
   <section class="reading-band">
     <div class="container reading-band-inner">
@@ -178,11 +257,28 @@ const bookSchemas = booksPageEntries.map((book) => ({
   gap: clamp(4rem, 10vw, 8rem);
 }
 
+.upcoming-books-section {
+  background: var(--surface);
+  padding-block-start: 0;
+}
+
+.upcoming-books-header {
+  text-align: center;
+  padding-top: 3.5rem;
+  margin-bottom: 3.5rem;
+}
+
+.upcoming-books-header .section-title {
+  font-size: clamp(2rem, 4.5vw, 3rem);
+  margin-top: 0.5rem;
+}
+
 .book-entry {
   display: grid;
   grid-template-columns: auto 1fr;
   gap: clamp(2.5rem, 7vw, 6rem);
   align-items: start;
+  scroll-margin-top: 6rem;
 }
 
 .book-entry--alt {
@@ -239,6 +335,7 @@ const bookSchemas = booksPageEntries.map((book) => ({
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
+  align-items: center;
 }
 
 .reading-band {

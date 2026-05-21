@@ -1,9 +1,31 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import NewsletterForm from '../components/NewsletterForm.astro';
-import { books, bookExcerpt } from '../data/books';
+import {
+  bookDetailsHref,
+  bookExcerpt,
+  bookMetaLabel,
+  getLatestBook,
+  pickQuoteBook,
+  releasedBooks,
+  upcomingBooks,
+  type Book,
+} from '../data/books';
 
-const latestBook = books[0];
+const latestBook = getLatestBook();
+const quoteBook =
+  upcomingBooks.length > 0 ? pickQuoteBook(releasedBooks, latestBook.title) : undefined;
+
+function previewHref(book: Book): string | undefined {
+  if (book.amazonLink) return book.amazonLink;
+  return book.links?.[0]?.href;
+}
+
+function previewLabel(book: Book): string {
+  if (book.amazonLink) return 'Amazon →';
+  const label = book.links?.[0]?.label;
+  return label ? `${label} →` : 'Read preview →';
+}
 ---
 
 <BaseLayout
@@ -51,7 +73,7 @@ const latestBook = books[0];
           />
         </div>
         <div class="spotlight-info">
-          <p class="section-label">{latestBook.genre} &nbsp;·&nbsp; {latestBook.year}</p>
+          <p class="section-label">{bookMetaLabel(latestBook)}</p>
           {latestBook.tagline && (
             <p class="spotlight-tagline serif">"{latestBook.tagline}"</p>
           )}
@@ -79,6 +101,63 @@ const latestBook = books[0];
     </div>
   </section>
 
+  {upcomingBooks.length > 0 && (
+    <section class="section-gap upcoming-section">
+      <div class="container">
+        <div class="section-header">
+          <p class="section-label">Upcoming</p>
+          <h2 class="serif section-title">Upcoming Books</h2>
+          <span class="rule"></span>
+        </div>
+        <div class="books-grid">
+          {upcomingBooks.map((book) => (
+            <article class="book-tile">
+              <div class="tile-cover">
+                <img
+                  class:list={['book-cover', 'book-cover--sm', { 'book-cover--draft': book.coverDraft }]}
+                  src={book.cover}
+                  alt={`Cover of ${book.title}`}
+                  width="170"
+                  height="255"
+                  loading="lazy"
+                />
+              </div>
+              <span class="book-badge">Coming Soon</span>
+              <p class="section-label">{bookMetaLabel(book)}</p>
+              <h3 class="tile-title serif">{book.title}</h3>
+              <p class="tile-desc">{bookExcerpt(book, 1)}</p>
+              <div class="tile-links">
+                <a href={bookDetailsHref(book.slug)} class="tile-link">More details →</a>
+                {previewHref(book) && (
+                  <a
+                    href={previewHref(book)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="tile-link tile-link-amazon"
+                  >
+                    {previewLabel(book)}
+                  </a>
+                )}
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {upcomingBooks.length > 0 && quoteBook && (
+    <section class="band-dark">
+      <div class="container band-inner">
+        <p class="band-quote serif">
+          {bookExcerpt(quoteBook, 1)}
+        </p>
+        <span class="rule"></span>
+        <p class="band-attr">— <em>{quoteBook.title}</em></p>
+      </div>
+    </section>
+  )}
+
   <section class="section-gap">
     <div class="container">
       <div class="section-header">
@@ -87,7 +166,7 @@ const latestBook = books[0];
         <span class="rule"></span>
       </div>
       <div class="books-grid">
-        {books.map(book => (
+        {releasedBooks.map((book) => (
           <article class="book-tile">
             <div class="tile-cover">
               <img
@@ -99,11 +178,11 @@ const latestBook = books[0];
                 loading="lazy"
               />
             </div>
-            <p class="section-label">{book.genre} · {book.year}</p>
+            <p class="section-label">{bookMetaLabel(book)}</p>
             <h3 class="tile-title serif">{book.title}</h3>
             <p class="tile-desc">{bookExcerpt(book, 1)}</p>
             <div class="tile-links">
-              <a href="/books" class="tile-link">More details →</a>
+              <a href={bookDetailsHref(book.slug)} class="tile-link">More details →</a>
               {(book.amazonLink || book.links?.[0]?.href) && (
                 <a
                   href={book.amazonLink ?? book.links?.[0]?.href}

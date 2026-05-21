@@ -1,9 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import NewsletterForm from '../components/NewsletterForm.astro';
-import { books, bookExcerpt, GOOGLE_PLAY_CURSED_BLOOD } from '../data/books';
+import { bookExcerpt, getLatestBook, GOOGLE_PLAY_CURSED_BLOOD } from '../data/books';
 
-const pullQuoteBook = books[0];
+const pullQuoteBook = getLatestBook();
 ---
 
 <BaseLayout
