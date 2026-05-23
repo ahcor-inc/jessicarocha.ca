@@ -152,7 +152,7 @@ export const books: Book[] = [
     releaseChannel: 'regular',
     releaseLabel: 'Read on Inkitt',
     description: [
-      "Werewolves usually have a pack, but me? I'm more of a lone wolf. Life hasn't been kind to me... with my parents gone and the only lead I have takes me to The Academy... I start a new chapter, will I find the aswers I am looking for? At the least maybe I will find some male distractions...",
+      "Werewolves usually have a pack, but me? I'm more of a lone wolf. Life hasn't been kind to me, and I am done taking people’s shit. With my parents gone and the only lead I have taking me to The Academy, I start a new chapter. Will I find the answers I am looking for? At the minimum, maybe I will find some distractions of the male variety..."
     ],
     cover: '/images/covers/the-academy.jpg',
     links: [
