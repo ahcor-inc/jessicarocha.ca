@@ -17,6 +17,7 @@ export enum BookSlug {
   ACollectionOfStories = 'a-collection-of-stories',
   RoyalBlood = 'royal-blood',
   LittleRedCloak = 'little-red-cloak',
+  NewWorld = 'new-world',
 }
 
 export type Book = {
@@ -209,6 +210,19 @@ export const books: Book[] = [
       { label: 'Inkitt', href: 'https://www.inkitt.com/stories/1420529' },
     ],
   },
+  {
+    title: 'New World',
+    slug: BookSlug.NewWorld,
+    genre: 'Post-Apocalyptic Romance',
+    status: 'coming-soon',
+    releaseChannel: 'traditional',
+    releaseLabel: 'Coming soon',
+    description: [
+      "The world wasn't always this way, the few books I've found about the past show large buildings, cars, normal bears - but less trees. I will say that at least, as humanity dwindled the vegetation took over. Food can be scarce and the top percent reap benefits that I can only dream of. The only equalizer as they call it is our mandatory training, we call it the games.",
+      "Though it's not equal, the rich still have the scale stacked in their favour. And if you aren't careful this game can cost you your life. They say it's a new world, I just say it's the same shit, different day. I need to survive, not draw attention and get back to my Mom. Now if only Hunter would leave me alone to do that…",
+    ],
+    cover: '/images/covers/new-world.jpg',
+  },
 ];
 
 export const booksPageEntries: BookPageEntry[] = [
@@ -344,6 +358,16 @@ export const booksPageEntries: BookPageEntry[] = [
     links: [
       { label: 'Inkitt', href: 'https://www.inkitt.com/stories/1420529' },
     ],
+  },
+  {
+    title: 'New World',
+    slug: BookSlug.NewWorld,
+    genre: 'Post-Apocalyptic Romance',
+    status: 'coming-soon',
+    releaseChannel: 'traditional',
+    releaseLabel: 'Coming soon',
+    description: getBook(BookSlug.NewWorld).description,
+    cover: '/images/covers/new-world.jpg',
   },
 ];
 
