@@ -132,16 +132,13 @@ export const books: Book[] = [
     releaseChannel: 'galatea',
     releaseLabel: 'Galatea · July 24, 2026',
     description: [
-      'Aster and I have been friends since that fateful day 10 years ago when we played hockey together for the first time.',
-      "I've had a crush on him since I can remember and it's only grown over time, but he just sees me as a friend.",
-      'Over the years we have bonded over our mutual love of hockey and similar interests, will it mature into more?',
-      'Life on the ice may be fast and cool, but off the ice will things start to heat up?',
-      'Possible trigger warning for some violence and adult situations/talk or forced situations.'
+      "Molly and Aster have spent years side by side, growing from childhood best friends into fierce university hockey teammates with Olympic dreams shining ahead. They share everything: early practices, late-night laughs, and a bond that feels unbreakable. But one impulsive night tilts the balance they've always trusted.",
+      "Suddenly, every glance lingers a little longer, every touch feels louder, and the lines between friendship and something more begin to blur. Just as emotions start skating into risky territory, an unsettling shadow creeps into their world, forcing them closer than ever. Between ambition, loyalty, and rising tension, Molly must face a truth she's long avoided. Because when hearts and dreams collide, staying safe might mean risking everything she thought she knew.",
     ],
     cover: '/images/covers/slap-shot.jpg',
-    coverDraft: true,
     links: [
       { label: 'Inkitt', href: 'https://www.inkitt.com/stories/1430321' },
+      { label: 'Galatea', href: 'https://galatea.go.link/?adj_t=1toq0y7w&page=Summary&state=comingSoon&seriesId=slap_shot_1' },
     ],
   },
   {
@@ -291,9 +288,9 @@ export const booksPageEntries: BookPageEntry[] = [
     releaseLabel: 'Galatea · July 24, 2026',
     description: getBook(BookSlug.SlapShot).description,
     cover: '/images/covers/slap-shot.jpg',
-    coverDraft: true,
     links: [
       { label: 'Inkitt', href: 'https://www.inkitt.com/stories/1430321' },
+      { label: 'Galatea', href: 'https://galatea.go.link/?adj_t=1toq0y7w&page=Summary&state=comingSoon&seriesId=slap_shot_1' },
     ],
   },
   {
