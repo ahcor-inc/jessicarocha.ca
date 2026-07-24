@@ -64,6 +64,24 @@ export function getBook(slug: BookSlug): Book {
 
 export const books: Book[] = [
   {
+    title: 'Slap Shot Book 1: A Hockey Romance',
+    slug: BookSlug.SlapShot,
+    year: '2026',
+    genre: 'Hockey Romance',
+    status: 'released',
+    description: [
+      "Molly and Aster have spent years side by side, growing from childhood best friends into fierce university hockey teammates with Olympic dreams shining ahead. They share everything: early practices, late-night laughs, and a bond that feels unbreakable. But one impulsive night tilts the balance they've always trusted.",
+      "Suddenly, every glance lingers a little longer, every touch feels louder, and the lines between friendship and something more begin to blur. Just as emotions start skating into risky territory, an unsettling shadow creeps into their world, forcing them closer than ever. Between ambition, loyalty, and rising tension, Molly must face a truth she's long avoided. Because when hearts and dreams collide, staying safe might mean risking everything she thought she knew.",
+    ],
+    cover: '/images/covers/slap-shot.jpg',
+    links: [
+      { label: 'Galatea', href: 'https://galatea.com/en/story/slap-shot-book-1-a-hockey-romance-20091' },
+      { label: 'Inkitt', href: 'https://www.inkitt.com/stories/1430321' },
+    ],
+    format: 'Galatea',
+    latest: true,
+  },
+  {
     title: 'Cursed Blood',
     slug: BookSlug.CursedBlood,
     year: '2026',
@@ -72,14 +90,13 @@ export const books: Book[] = [
     description: [
       'Cursed Blood is a steamy vampire romance set in a world reminiscent of the medieval era, where danger and desire intertwine.',
       'Elizabeth',
-      'Some call me cursed, others merely tolerate me and a few call me friend. Deep down, I’ve always felt the weight of my past—the guilt of something that happened in my childhood, something that can never be erased.',
-      'No matter how many times I’m told I’m not to blame, the burden of it eats at me. The only thing I can do is become stronger.',
-      'Christopher is the first friend I’ve made since I arrived at the academy all those years ago. But I want more than just his friendship… But will he accept me? Do I even deserve his love?',
+      'Some call me cursed, others merely tolerate me and a few call me friend. Deep down, I\'ve always felt the weight of my past—the guilt of something that happened in my childhood, something that can never be erased.',
+      'No matter how many times I\'m told I\'m not to blame, the burden of it eats at me. The only thing I can do is become stronger.',
+      'Christopher is the first friend I\'ve made since I arrived at the academy all those years ago. But I want more than just his friendship… But will he accept me? Do I even deserve his love?',
     ],
     cover: '/images/covers/cursed-blood.jpg',
     amazonLink: 'https://www.amazon.com/Cursed-Blood-Jessica-Rocha-ebook/dp/B0GNDH8LN5',
     isbn: '978-1738894536',
-    latest: true,
   },
   {
     title: 'Broken?',
@@ -126,23 +143,6 @@ export const books: Book[] = [
     amazonLink: 'https://www.amazon.com/Hunt-Jessica-Rocha/dp/1777284929',
   },
   {
-    title: 'Slap Shot Book 1: A Hockey Romance',
-    slug: BookSlug.SlapShot,
-    genre: 'Hockey Romance',
-    status: 'coming-soon',
-    releaseChannel: 'galatea',
-    releaseLabel: 'Galatea · July 24, 2026',
-    description: [
-      "Molly and Aster have spent years side by side, growing from childhood best friends into fierce university hockey teammates with Olympic dreams shining ahead. They share everything: early practices, late-night laughs, and a bond that feels unbreakable. But one impulsive night tilts the balance they've always trusted.",
-      "Suddenly, every glance lingers a little longer, every touch feels louder, and the lines between friendship and something more begin to blur. Just as emotions start skating into risky territory, an unsettling shadow creeps into their world, forcing them closer than ever. Between ambition, loyalty, and rising tension, Molly must face a truth she's long avoided. Because when hearts and dreams collide, staying safe might mean risking everything she thought she knew.",
-    ],
-    cover: '/images/covers/slap-shot.jpg',
-    links: [
-      { label: 'Inkitt', href: 'https://www.inkitt.com/stories/1430321' },
-      { label: 'Galatea', href: 'https://galatea.go.link/?adj_t=1toq0y7w&page=Summary&state=comingSoon&seriesId=slap_shot_1' },
-    ],
-  },
-  {
     title: 'The Academy',
     slug: BookSlug.TheAcademy,
     genre: 'Steamy Werewolf Romance',
@@ -150,7 +150,7 @@ export const books: Book[] = [
     releaseChannel: 'regular',
     releaseLabel: 'Read on Inkitt',
     description: [
-      "Werewolves usually have a pack, but me? I'm more of a lone wolf. Life hasn't been kind to me, and I am done taking people’s shit. With my parents gone and the only lead I have taking me to The Academy, I start a new chapter. Will I find the answers I am looking for? At the minimum, maybe I will find some distractions of the male variety..."
+      "Werewolves usually have a pack, but me? I'm more of a lone wolf. Life hasn't been kind to me, and I am done taking people\'s shit. With my parents gone and the only lead I have taking me to The Academy, I start a new chapter. Will I find the answers I am looking for? At the minimum, maybe I will find some distractions of the male variety..."
     ],
     cover: '/images/covers/the-academy.jpg',
     links: [
@@ -227,6 +227,20 @@ export const books: Book[] = [
 
 export const booksPageEntries: BookPageEntry[] = [
   {
+    title: 'Slap Shot Book 1: A Hockey Romance',
+    slug: BookSlug.SlapShot,
+    year: '2026',
+    genre: 'Hockey Romance',
+    status: 'released',
+    description: getBook(BookSlug.SlapShot).description,
+    cover: '/images/covers/slap-shot.jpg',
+    links: [
+      { label: 'Galatea', href: 'https://galatea.com/en/story/slap-shot-book-1-a-hockey-romance-20091' },
+      { label: 'Inkitt', href: 'https://www.inkitt.com/stories/1430321' },
+    ],
+    format: 'Galatea',
+  },
+  {
     title: 'Cursed Blood',
     slug: BookSlug.CursedBlood,
     year: '2026',
@@ -292,20 +306,6 @@ export const booksPageEntries: BookPageEntry[] = [
     ],
     format: 'Paperback & eBook',
     isbn: '978-1777284923',
-  },
-  {
-    title: 'Slap Shot Book 1: A Hockey Romance',
-    slug: BookSlug.SlapShot,
-    genre: 'Hockey Romance',
-    status: 'coming-soon',
-    releaseChannel: 'galatea',
-    releaseLabel: 'Galatea · July 24, 2026',
-    description: getBook(BookSlug.SlapShot).description,
-    cover: '/images/covers/slap-shot.jpg',
-    links: [
-      { label: 'Inkitt', href: 'https://www.inkitt.com/stories/1430321' },
-      { label: 'Galatea', href: 'https://galatea.go.link/?adj_t=1toq0y7w&page=Summary&state=comingSoon&seriesId=slap_shot_1' },
-    ],
   },
   {
     title: 'The Academy',

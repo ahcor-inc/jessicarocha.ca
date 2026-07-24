@@ -30,7 +30,7 @@ See [`docs/SECURITY-HEADERS.md`](../../docs/SECURITY-HEADERS.md) for optional Cl
    ```bash
    yarn wrangler secret put TURNSTILE_SECRET
    ```
-4. Use Cloudflare’s test keys for local development if needed.
+4. Use Cloudflare's test keys for local development if needed.
 
 When `TURNSTILE_SECRET` is not set on the Worker, Turnstile verification is skipped (local dev only — always set in production).
 
