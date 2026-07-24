@@ -395,8 +395,10 @@ export function bookExcerpt(book: Book, maxParagraphs = 2): string {
   return paragraphs.slice(0, maxParagraphs).join(' ');
 }
 
-export function pickQuoteBook(pool: Book[], excludeTitle: string): Book | undefined {
-  const candidates = pool.filter((b) => b.title !== excludeTitle);
+export function pickQuoteBook(pool: Book[], excludeTitle?: string): Book | undefined {
+  const candidates = excludeTitle
+    ? pool.filter((b) => b.title !== excludeTitle)
+    : pool;
   if (candidates.length === 0) return undefined;
   return candidates[Math.floor(Math.random() * candidates.length)];
 }

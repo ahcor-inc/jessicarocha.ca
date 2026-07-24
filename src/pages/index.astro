@@ -5,6 +5,7 @@ import {
   bookDetailsHref,
   bookExcerpt,
   bookMetaLabel,
+  books,
   getLatestBook,
   pickQuoteBook,
   releasedBooks,
@@ -13,8 +14,9 @@ import {
 } from '../data/books';
 
 const latestBook = getLatestBook();
+const bandQuoteBook = pickQuoteBook(books) ?? latestBook;
 const quoteBook =
-  upcomingBooks.length > 0 ? pickQuoteBook(releasedBooks, latestBook.title) : undefined;
+  upcomingBooks.length > 0 ? pickQuoteBook(releasedBooks, bandQuoteBook.title) : undefined;
 
 function previewHref(book: Book): string | undefined {
   if (book.amazonLink) return book.amazonLink;
@@ -94,10 +96,10 @@ function previewLabel(book: Book): string {
   <section class="band-dark">
     <div class="container band-inner">
       <p class="band-quote serif">
-        {bookExcerpt(latestBook, 1)}
+        {bookExcerpt(bandQuoteBook, 1)}
       </p>
       <span class="rule"></span>
-      <p class="band-attr">— <em>{latestBook.title}</em></p>
+      <p class="band-attr">— <em>{bandQuoteBook.title}</em></p>
     </div>
   </section>
 
