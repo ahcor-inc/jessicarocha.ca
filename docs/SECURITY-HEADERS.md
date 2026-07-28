@@ -8,21 +8,21 @@ A fallback `Content-Security-Policy` `<meta>` tag is emitted on the contact page
 
 ## Recommended Cloudflare Transform Rules
 
-In the Cloudflare dashboard → your zone → **Rules → Transform Rules → Modify Response Header**, add one rule per header below. Scope each to: *Hostname equals* `jessicarocha.ca` (and `www.jessicarocha.ca` if applicable).
+In the Cloudflare dashboard → your zone → **Rules → Transform Rules → Modify Response Header**, add one rule per header below. Scope each to: _Hostname equals_ `jessicarocha.ca` (and `www.jessicarocha.ca` if applicable).
 
-| Header | Value |
-|---|---|
-| `X-Frame-Options` | `DENY` |
-| `X-Content-Type-Options` | `nosniff` |
-| `Referrer-Policy` | `strict-origin-when-cross-origin` |
-| `Permissions-Policy` | `camera=(), microphone=(), geolocation=()` |
-| `Content-Security-Policy` | (see below) |
+| Header                    | Value                                      |
+| ------------------------- | ------------------------------------------ |
+| `X-Frame-Options`         | `DENY`                                     |
+| `X-Content-Type-Options`  | `nosniff`                                  |
+| `Referrer-Policy`         | `strict-origin-when-cross-origin`          |
+| `Permissions-Policy`      | `camera=(), microphone=(), geolocation=()` |
+| `Content-Security-Policy` | (see below)                                |
 
 ### Content-Security-Policy
 
 ```
 default-src 'self';
-script-src 'self' https://challenges.cloudflare.com;
+script-src 'self' https://challenges.cloudflare.com https://www.googletagmanager.com;
 frame-src https://challenges.cloudflare.com;
 style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
 img-src 'self' data: https:;
@@ -34,7 +34,10 @@ base-uri 'self'
 ```
 
 Notes on each directive:
-- `script-src 'self' https://challenges.cloudflare.com` — contact-form logic is bundled to `/_astro/` (same-origin); Turnstile loads from `challenges.cloudflare.com`.
+
+- `script-src 'self' https://challenges.cloudflare.com https://www.googletagmanager.com` — site
+  scripts load from the same origin, Turnstile loads from `challenges.cloudflare.com`, and Google
+  Analytics loads from `www.googletagmanager.com`.
 - `frame-src https://challenges.cloudflare.com` — Turnstile widget iframe.
 - `style-src ... https://fonts.googleapis.com` — Google Fonts stylesheet.
 - `font-src ... https://fonts.gstatic.com` — Google Fonts files.
@@ -45,6 +48,7 @@ Notes on each directive:
 ## After the Transform Rules are live
 
 Once the rules above are confirmed deployed (verify with `curl -I https://jessicarocha.ca/`), do the following cleanup in this repo:
+
 1. Remove the `<meta http-equiv="Content-Security-Policy" ...>` block from `src/layouts/BaseLayout.astro`.
 2. Remove the `<meta name="referrer" ...>` tag from the same file (now an HTTP header).
 3. Remove the `turnstileCsp` prop and `turnstileCspContent` constant from `BaseLayout.astro` and its caller in `src/pages/contact.astro`.
