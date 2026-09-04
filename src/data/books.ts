@@ -327,6 +327,19 @@ export const booksPageEntries: BookPageEntry[] = [
     isbn: '978-1777284923',
   },
   {
+    title: 'The Half-Fae and Vampire CEO',
+    slug: BookSlug.TheHalfFaeAndVampireCeo,
+    genre: 'Romance',
+    status: 'coming-soon',
+    releaseChannel: 'regular',
+    releaseLabel: 'Read on Inkitt',
+    description: getBook(BookSlug.TheHalfFaeAndVampireCeo).description,
+    cover: '/images/covers/the-half-fae-and-vampire-ceo.jpg',
+    links: [
+      { label: 'Inkitt', href: 'https://www.inkitt.com/stories/1874858' },
+    ],
+  },
+  {
     title: 'The Academy',
     slug: BookSlug.TheAcademy,
     genre: 'Steamy Werewolf Romance',
@@ -390,19 +403,6 @@ export const booksPageEntries: BookPageEntry[] = [
     releaseLabel: 'Coming soon',
     description: getBook(BookSlug.NewWorld).description,
     cover: '/images/covers/new-world.jpg',
-  },
-  {
-    title: 'The Half-Fae and Vampire CEO',
-    slug: BookSlug.TheHalfFaeAndVampireCeo,
-    genre: 'Romance',
-    status: 'coming-soon',
-    releaseChannel: 'regular',
-    releaseLabel: 'Read on Inkitt',
-    description: getBook(BookSlug.TheHalfFaeAndVampireCeo).description,
-    cover: '/images/covers/the-half-fae-and-vampire-ceo.jpg',
-    links: [
-      { label: 'Inkitt', href: 'https://www.inkitt.com/stories/1874858' },
-    ],
   },
 ];
 
