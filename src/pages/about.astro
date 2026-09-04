@@ -1,14 +1,28 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import NewsletterForm from '../components/NewsletterForm.astro';
-import { bookExcerpt, getLatestBook, GOOGLE_PLAY_CURSED_BLOOD } from '../data/books';
+import {
+  BookSlug,
+  bookDetailsHref,
+  bookExcerpt,
+  getBook,
+  getLatestBook,
+  GOOGLE_PLAY_CURSED_BLOOD,
+  releasedBooks,
+} from '../data/books';
 
 const pullQuoteBook = getLatestBook();
+const publishedCount = releasedBooks.length;
+const slapShotGalatea =
+  getBook(BookSlug.SlapShot).links?.find((l) => l.label === 'Galatea')?.href ??
+  'https://galatea.com/en/story/slap-shot-book-1-a-hockey-romance-20091';
+const amazonAuthor = 'https://www.amazon.ca/stores/Jessica-Rocha/author/B08Q3XDPJF';
+const inkittAuthor = 'https://www.inkitt.com/Jessica_Rocha';
 ---
 
 <BaseLayout
   title="About — Jessica Rocha"
-  description="Jessica Rocha is a Canadian author of supernatural romance, known for Hunt, Death, Love, and Zombies, Cursed Blood, and Broken?."
+  description="Jessica Rocha is a Canadian author of spicy romances, known for Hunt, Death, Love, and Zombies, Little Red Cloak, Cursed Blood, Broken?, and Slapshot: A Hockey Romance."
 >
   <section class="page-hero">
     <div class="container">
@@ -27,20 +41,31 @@ const pullQuoteBook = getLatestBook();
       </div>
       <div class="bio-text">
         <h2 class="serif bio-heading">Jessica Rocha</h2>
-        <p class="bio-sub section-label">Canadian Author · Supernatural Romance</p>
+        <p class="bio-sub section-label">Canadian Author · Spicy Romance</p>
         <span class="rule rule-left"></span>
 
         <p>
-          Jessica Rocha is a Canadian author of supernatural romance. She enjoys drinking tea and writing steamy romance novels. She is currently writing multiple novels and is dipping her toes into horror.
+          Jessica Rocha is a Canadian author of spicy romances. She enjoys drinking tea and writing steamy romance novels. She is currently writing multiple novels and is dipping her toes into horror. She is a 90s baby and sometimes that type of humour shines through into her books.
         </p>
         <p>
-          Her published works include <em>Hunt</em> (2020), <em>Broken?</em> (2021), <em>Death, Love, and Zombies</em> (2021), and <em>Cursed Blood</em> (2026).
-          Her books are available on Amazon, Google Play Books, Inkitt, and more.
+          Her published works include
+          <a href={bookDetailsHref(BookSlug.SlapShot)}><em>Slapshot: A Hockey Romance</em></a>
+          (2026, <a href={slapShotGalatea} target="_blank" rel="noopener noreferrer">only available on Galatea</a>),
+          <a href={bookDetailsHref(BookSlug.CursedBlood)}><em>Cursed Blood</em></a> (2026),
+          <a href={bookDetailsHref(BookSlug.LittleRedCloak)}><em>Little Red Cloak</em></a> (2025),
+          <a href={bookDetailsHref(BookSlug.Broken)}><em>Broken?</em></a> (2021),
+          <a href={bookDetailsHref(BookSlug.DeathLoveAndZombies)}><em>Death, Love, and Zombies</em></a> (2021),
+          and <a href={bookDetailsHref(BookSlug.Hunt)}><em>Hunt</em></a> (2020).
+          Her books are available on
+          <a href={amazonAuthor} target="_blank" rel="noopener noreferrer">Amazon</a>,
+          <a href={GOOGLE_PLAY_CURSED_BLOOD} target="_blank" rel="noopener noreferrer">Google Play Books</a>,
+          <a href={inkittAuthor} target="_blank" rel="noopener noreferrer">Inkitt</a>,
+          and more.
         </p>
 
         <div class="bio-meta">
           <div class="bio-stat">
-            <span class="stat-number serif">4</span>
+            <span class="stat-number serif">{publishedCount}</span>
             <span class="stat-label">Novels</span>
           </div>
           <div class="bio-stat">
@@ -55,7 +80,7 @@ const pullQuoteBook = getLatestBook();
 
         <div class="bio-links">
           <a
-            href="https://www.amazon.ca/stores/Jessica-Rocha/author/B08Q3XDPJF"
+            href={amazonAuthor}
             target="_blank"
             rel="noopener noreferrer"
             class="btn btn-dark"
@@ -95,7 +120,7 @@ const pullQuoteBook = getLatestBook();
             TikTok
           </a>
           <a
-            href="https://www.inkitt.com/Jessica_Rocha"
+            href={inkittAuthor}
             target="_blank"
             rel="noopener noreferrer"
             class="btn btn-wine"
@@ -162,6 +187,16 @@ const pullQuoteBook = getLatestBook();
   color: var(--charcoal-mid);
   line-height: 1.88;
   margin-bottom: 1.2rem;
+}
+
+.bio-text p a {
+  color: var(--wine-light);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.bio-text p a:hover {
+  color: var(--gold);
 }
 
 .bio-meta {

@@ -18,6 +18,7 @@ export enum BookSlug {
   RoyalBlood = 'royal-blood',
   LittleRedCloak = 'little-red-cloak',
   NewWorld = 'new-world',
+  TheHalfFaeAndVampireCeo = 'the-half-fae-and-vampire-ceo',
 }
 
 export type Book = {
@@ -143,6 +144,23 @@ export const books: Book[] = [
     amazonLink: 'https://www.amazon.com/Hunt-Jessica-Rocha/dp/1777284929',
   },
   {
+    title: 'The Half-Fae and Vampire CEO',
+    slug: BookSlug.TheHalfFaeAndVampireCeo,
+    genre: 'Romance',
+    status: 'coming-soon',
+    releaseChannel: 'regular',
+    releaseLabel: 'Read on Inkitt',
+    description: [
+      'Being half-human and half-Fae has its drawbacks...',
+      'I\'m not fully accepted by humans or Fae. Not Fae enough for them and not human enough for the humans. I don\'t even know who my parents are, maybe they abandoned me or maybe they are dead. I don\'t really have time to worry about that, just getting by day to day is hard enough.',
+      'I am a professional Thief, it\'s what pays the bills... But will what was suppose to be a simple job turn into a complicated mess?',
+    ],
+    cover: '/images/covers/the-half-fae-and-vampire-ceo.jpg',
+    links: [
+      { label: 'Inkitt', href: 'https://www.inkitt.com/stories/1874858' },
+    ],
+  },
+  {
     title: 'The Academy',
     slug: BookSlug.TheAcademy,
     genre: 'Steamy Werewolf Romance',
@@ -196,16 +214,17 @@ export const books: Book[] = [
   {
     title: 'Little Red Cloak',
     slug: BookSlug.LittleRedCloak,
+    year: '2025',
     genre: 'Steamy Werewolf Romance',
-    status: 'coming-soon',
-    releaseChannel: 'regular',
-    releaseLabel: 'Read on Inkitt',
+    status: 'released',
     description: [
       'My parents always warned me not to go out into the woods at night... But I am one that doesn\'t always listen... Secrets are revealed and the course of my life is changed forever. Will Hunter accept me? Or am I fated to another?',
       'Little Red Cloak is a "little red riding hood" variation story.',
       'Possible trigger warning for some violence and adult situations/talk or forced situations.',
     ],
     cover: '/images/covers/little-red-cloak.jpg',
+    amazonLink: 'https://www.amazon.ca/dp/B0HG4VNLNF',
+    isbn: '978-1738894550',
     links: [
       { label: 'Inkitt', href: 'https://www.inkitt.com/stories/1420529' },
     ],
@@ -349,15 +368,18 @@ export const booksPageEntries: BookPageEntry[] = [
   {
     title: 'Little Red Cloak',
     slug: BookSlug.LittleRedCloak,
+    year: '2025',
     genre: 'Steamy Werewolf Romance',
-    status: 'coming-soon',
-    releaseChannel: 'regular',
-    releaseLabel: 'Read on Inkitt',
+    status: 'released',
     description: getBook(BookSlug.LittleRedCloak).description,
     cover: '/images/covers/little-red-cloak.jpg',
     links: [
+      { label: 'Amazon (eBook)', href: 'https://www.amazon.ca/dp/B0HG4VNLNF' },
+      { label: 'Amazon (Paperback)', href: 'https://www.amazon.ca/dp/173889455X' },
       { label: 'Inkitt', href: 'https://www.inkitt.com/stories/1420529' },
     ],
+    format: 'Paperback & eBook',
+    isbn: '978-1738894550',
   },
   {
     title: 'New World',
@@ -368,6 +390,19 @@ export const booksPageEntries: BookPageEntry[] = [
     releaseLabel: 'Coming soon',
     description: getBook(BookSlug.NewWorld).description,
     cover: '/images/covers/new-world.jpg',
+  },
+  {
+    title: 'The Half-Fae and Vampire CEO',
+    slug: BookSlug.TheHalfFaeAndVampireCeo,
+    genre: 'Romance',
+    status: 'coming-soon',
+    releaseChannel: 'regular',
+    releaseLabel: 'Read on Inkitt',
+    description: getBook(BookSlug.TheHalfFaeAndVampireCeo).description,
+    cover: '/images/covers/the-half-fae-and-vampire-ceo.jpg',
+    links: [
+      { label: 'Inkitt', href: 'https://www.inkitt.com/stories/1874858' },
+    ],
   },
 ];
 
@@ -385,9 +420,21 @@ export function bookMetaLabel(book: { genre: string; year?: string; releaseLabel
   return datePart ? `${book.genre} · ${datePart}` : book.genre;
 }
 
-export const releasedBooks = books.filter((b) => !isComingSoon(b));
+function releaseYear(book: { year?: string }): number {
+  const parsed = Number.parseInt(book.year ?? '', 10);
+  return Number.isFinite(parsed) ? parsed : Number.NEGATIVE_INFINITY;
+}
+
+/** Newest published year first; same-year titles keep source order. */
+export function byReleaseYearDesc<T extends { year?: string }>(a: T, b: T): number {
+  return releaseYear(b) - releaseYear(a);
+}
+
+export const releasedBooks = books.filter((b) => !isComingSoon(b)).sort(byReleaseYearDesc);
 export const upcomingBooks = books.filter(isComingSoon);
-export const releasedBooksPageEntries = booksPageEntries.filter((b) => !isComingSoon(b));
+export const releasedBooksPageEntries = booksPageEntries
+  .filter((b) => !isComingSoon(b))
+  .sort(byReleaseYearDesc);
 export const upcomingBooksPageEntries = booksPageEntries.filter(isComingSoon);
 
 export function bookExcerpt(book: Book, maxParagraphs = 2): string {

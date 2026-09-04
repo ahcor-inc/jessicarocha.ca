@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import NewsletterForm from '../components/NewsletterForm.astro';
 import {
+  BookSlug,
   bookDetailsHref,
   bookExcerpt,
   bookMetaLabel,
@@ -217,10 +218,16 @@ function previewLabel(book: Book): string {
         <h2 class="serif about-title">About Jessica</h2>
         <span class="rule rule-left"></span>
         <p>
-          Jessica Rocha is a Canadian author of supernatural romance. She enjoys drinking tea and writing steamy romance novels. She is currently writing multiple novels and is dipping her toes into horror.
+          Jessica Rocha is a Canadian author of spicy romances. She enjoys drinking tea and writing steamy romance novels. She is currently writing multiple novels and is dipping her toes into horror. She is a 90s baby and sometimes that type of humour shines through into her books.
         </p>
         <p>
-          Her published works include <em>Hunt</em>, <em>Broken?</em>, <em>Death, Love, and Zombies</em>, and <em>Cursed Blood</em>.
+          Her published works include
+          <a href={bookDetailsHref(BookSlug.SlapShot)}><em>Slapshot: A Hockey Romance</em></a>,
+          <a href={bookDetailsHref(BookSlug.CursedBlood)}><em>Cursed Blood</em></a>,
+          <a href={bookDetailsHref(BookSlug.LittleRedCloak)}><em>Little Red Cloak</em></a>,
+          <a href={bookDetailsHref(BookSlug.Broken)}><em>Broken?</em></a>,
+          <a href={bookDetailsHref(BookSlug.DeathLoveAndZombies)}><em>Death, Love, and Zombies</em></a>,
+          and <a href={bookDetailsHref(BookSlug.Hunt)}><em>Hunt</em></a>.
         </p>
         <a href="/about" class="btn btn-wine about-cta">Full Bio</a>
       </div>
@@ -448,6 +455,16 @@ function previewLabel(book: Book): string {
   color: var(--charcoal-mid);
   font-size: 1rem;
   line-height: 1.85;
+}
+
+.about-text p a {
+  color: var(--wine-light);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.about-text p a:hover {
+  color: var(--gold);
 }
 
 .about-cta { margin-top: 2rem; }
