@@ -29,6 +29,8 @@ export type Book = {
   title: string;
   slug: BookSlug;
   year?: string;
+  /** ISO date `YYYY-MM-DD` from Amazon/Galatea when known; used for sort order. */
+  releaseDate?: string;
   genre: string;
   tagline?: string;
   description: string[];
@@ -48,6 +50,8 @@ export type BookPageEntry = {
   title: string;
   slug: BookSlug;
   year?: string;
+  /** ISO date `YYYY-MM-DD` from Amazon/Galatea when known; used for sort order. */
+  releaseDate?: string;
   genre: string;
   description: string[];
   cover: string;
@@ -72,6 +76,7 @@ export const books: Book[] = [
     title: 'Slap Shot Book 1: A Hockey Romance',
     slug: BookSlug.SlapShot,
     year: '2026',
+    releaseDate: '2026-07-24',
     genre: 'Hockey Romance',
     status: 'released',
     description: [
@@ -89,6 +94,7 @@ export const books: Book[] = [
     title: 'Cursed Blood',
     slug: BookSlug.CursedBlood,
     year: '2026',
+    releaseDate: '2026-02-14',
     genre: 'Steamy Vampire Romance',
     status: 'released',
     description: [
@@ -106,6 +112,7 @@ export const books: Book[] = [
     title: 'Broken?',
     slug: BookSlug.Broken,
     year: '2021',
+    releaseDate: '2021-01-17',
     genre: 'Contemporary Romance',
     status: 'released',
     description: [
@@ -125,6 +132,7 @@ export const books: Book[] = [
     title: 'Death, Love, and Zombies',
     slug: BookSlug.DeathLoveAndZombies,
     year: '2021',
+    releaseDate: '2021-01-16',
     genre: 'Fantasy Romance · Werewolf',
     status: 'released',
     description: [
@@ -138,6 +146,7 @@ export const books: Book[] = [
     title: 'Hunt',
     slug: BookSlug.Hunt,
     year: '2020',
+    releaseDate: '2020-07-02',
     genre: 'Steamy Werewolf Romance',
     status: 'released',
     description: [
@@ -182,6 +191,7 @@ export const books: Book[] = [
     title: 'A Collection Of Stories',
     slug: BookSlug.ACollectionOfStories,
     year: '2026',
+    releaseDate: '2026-09-27',
     genre: 'Horror',
     status: 'released',
     description: [
@@ -205,6 +215,7 @@ export const books: Book[] = [
     title: 'Royal Blood',
     slug: BookSlug.RoyalBlood,
     year: '2026',
+    releaseDate: '2026-09-27',
     genre: 'Steamy Vampire Romance',
     status: 'released',
     description: [
@@ -226,7 +237,8 @@ export const books: Book[] = [
   {
     title: 'Little Red Cloak',
     slug: BookSlug.LittleRedCloak,
-    year: '2025',
+    year: '2026',
+    releaseDate: '2026-08-22',
     genre: 'Steamy Werewolf Romance',
     status: 'released',
     description: [
@@ -312,6 +324,7 @@ export const booksPageEntries: BookPageEntry[] = [
     title: 'Slap Shot Book 1: A Hockey Romance',
     slug: BookSlug.SlapShot,
     year: '2026',
+    releaseDate: getBook(BookSlug.SlapShot).releaseDate,
     genre: 'Hockey Romance',
     status: 'released',
     description: getBook(BookSlug.SlapShot).description,
@@ -326,6 +339,7 @@ export const booksPageEntries: BookPageEntry[] = [
     title: 'Cursed Blood',
     slug: BookSlug.CursedBlood,
     year: '2026',
+    releaseDate: getBook(BookSlug.CursedBlood).releaseDate,
     genre: 'Steamy Vampire Romance',
     status: 'released',
     description: getBook(BookSlug.CursedBlood).description,
@@ -342,6 +356,7 @@ export const booksPageEntries: BookPageEntry[] = [
     title: 'Broken?',
     slug: BookSlug.Broken,
     year: '2021',
+    releaseDate: getBook(BookSlug.Broken).releaseDate,
     genre: 'Contemporary Romance',
     status: 'released',
     description: getBook(BookSlug.Broken).description,
@@ -358,6 +373,7 @@ export const booksPageEntries: BookPageEntry[] = [
     title: 'Death, Love, and Zombies',
     slug: BookSlug.DeathLoveAndZombies,
     year: '2021',
+    releaseDate: getBook(BookSlug.DeathLoveAndZombies).releaseDate,
     genre: 'Fantasy Romance · Werewolf',
     status: 'released',
     description: getBook(BookSlug.DeathLoveAndZombies).description,
@@ -376,6 +392,7 @@ export const booksPageEntries: BookPageEntry[] = [
     title: 'Hunt',
     slug: BookSlug.Hunt,
     year: '2020',
+    releaseDate: getBook(BookSlug.Hunt).releaseDate,
     genre: 'Steamy Werewolf Romance',
     status: 'released',
     description: getBook(BookSlug.Hunt).description,
@@ -419,6 +436,7 @@ export const booksPageEntries: BookPageEntry[] = [
     title: 'A Collection Of Stories',
     slug: BookSlug.ACollectionOfStories,
     year: '2026',
+    releaseDate: getBook(BookSlug.ACollectionOfStories).releaseDate,
     genre: 'Horror',
     status: 'released',
     description: getBook(BookSlug.ACollectionOfStories).description,
@@ -435,6 +453,7 @@ export const booksPageEntries: BookPageEntry[] = [
     title: 'Royal Blood',
     slug: BookSlug.RoyalBlood,
     year: '2026',
+    releaseDate: getBook(BookSlug.RoyalBlood).releaseDate,
     genre: 'Steamy Vampire Romance',
     status: 'released',
     description: getBook(BookSlug.RoyalBlood).description,
@@ -450,7 +469,8 @@ export const booksPageEntries: BookPageEntry[] = [
   {
     title: 'Little Red Cloak',
     slug: BookSlug.LittleRedCloak,
-    year: '2025',
+    year: '2026',
+    releaseDate: getBook(BookSlug.LittleRedCloak).releaseDate,
     genre: 'Steamy Werewolf Romance',
     status: 'released',
     description: getBook(BookSlug.LittleRedCloak).description,
@@ -529,21 +549,31 @@ export function bookMetaLabel(book: { genre: string; year?: string; releaseLabel
   return datePart ? `${book.genre} · ${datePart}` : book.genre;
 }
 
-function releaseYear(book: { year?: string }): number {
-  const parsed = Number.parseInt(book.year ?? '', 10);
-  return Number.isFinite(parsed) ? parsed : Number.NEGATIVE_INFINITY;
+/** Sort key: full `releaseDate`, else `year-01-01`, else epoch. */
+function releaseSortKey(book: { releaseDate?: string; year?: string }): string {
+  if (book.releaseDate && /^\d{4}-\d{2}-\d{2}$/.test(book.releaseDate)) {
+    return book.releaseDate;
+  }
+  const year = Number.parseInt(book.year ?? '', 10);
+  if (Number.isFinite(year)) return `${year}-01-01`;
+  return '0000-01-01';
 }
 
-/** Newest published year first; same-year titles keep source order. */
-export function byReleaseYearDesc<T extends { year?: string }>(a: T, b: T): number {
-  return releaseYear(b) - releaseYear(a);
+/** Newest release date first; same day → title A–Z. */
+export function byReleaseDateDesc<T extends { title: string; releaseDate?: string; year?: string }>(
+  a: T,
+  b: T,
+): number {
+  const byDate = releaseSortKey(b).localeCompare(releaseSortKey(a));
+  if (byDate !== 0) return byDate;
+  return a.title.localeCompare(b.title, 'en', { sensitivity: 'base' });
 }
 
-export const releasedBooks = books.filter((b) => !isComingSoon(b)).sort(byReleaseYearDesc);
+export const releasedBooks = books.filter((b) => !isComingSoon(b)).sort(byReleaseDateDesc);
 export const upcomingBooks = books.filter(isComingSoon);
 export const releasedBooksPageEntries = booksPageEntries
   .filter((b) => !isComingSoon(b))
-  .sort(byReleaseYearDesc);
+  .sort(byReleaseDateDesc);
 export const upcomingBooksPageEntries = booksPageEntries.filter(isComingSoon);
 
 export function bookExcerpt(book: Book, maxParagraphs = 2): string {

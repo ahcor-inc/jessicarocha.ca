@@ -21,7 +21,9 @@ const bookSchemas = releasedBooksPageEntries.map((book) => ({
   },
   inLanguage: 'en',
   genre: book.genre,
-  ...(book.year ? { datePublished: book.year } : {}),
+  ...(book.releaseDate || book.year
+    ? { datePublished: book.releaseDate ?? book.year }
+    : {}),
   bookFormat:
     book.format && book.format.toLowerCase().includes('paperback')
       ? 'https://schema.org/Paperback'
